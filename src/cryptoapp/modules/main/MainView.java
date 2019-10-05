@@ -17,8 +17,6 @@ import javafx.scene.layout.VBox;
 public class MainView extends ActivityChild {
 
     @FXML
-    private GridPane root;
-    @FXML
     private ToggleButton fileToggle;
     @FXML
     private ToggleButton textToggle;

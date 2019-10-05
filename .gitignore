@@ -69,3 +69,4 @@ fabric.properties
 
 /src/META-INF/MANIFEST.MF
 /.idea/artifacts/CryptoApp_jar.xml
+/META-INF/MANIFEST.MF

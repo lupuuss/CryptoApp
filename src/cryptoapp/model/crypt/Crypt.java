@@ -41,11 +41,6 @@ public class Crypt {
 
     public static KeyGenerator getKeyGenerator() {
 
-        return new KeyGenerator() {
-            @Override
-            public String generate(int keyLength) {
-                return "XDD";
-            }
-        };
+        return keyLength -> "XDD";
     }
 }

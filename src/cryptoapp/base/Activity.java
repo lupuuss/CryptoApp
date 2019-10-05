@@ -7,6 +7,7 @@ import javafx.stage.Stage;
 /**
     Wraps scene management. Scene root is loaded from FXML.
  **/
+@SuppressWarnings({"unused", "WeakerAccess"})
 public abstract class Activity<T> {
 
     private String title;

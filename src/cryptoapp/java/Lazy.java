@@ -9,7 +9,7 @@ public class Lazy <T> {
 
     private T value;
 
-    private Producer<T> lazyProducer;
+    private final Producer<T> lazyProducer;
 
     public Lazy(Producer<T> lazyProducer) {
         this.lazyProducer = lazyProducer;

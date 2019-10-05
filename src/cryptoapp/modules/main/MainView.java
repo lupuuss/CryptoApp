@@ -23,7 +23,7 @@ public class MainView implements View {
     @FXML
     private VBox currentParentContainer;
 
-    private Lazy<Parent> textCryptView = new Lazy<>(() -> {
+    private final Lazy<Parent> textCryptView = new Lazy<>(() -> {
 
         try {
 
@@ -39,7 +39,7 @@ public class MainView implements View {
         }
     });
 
-    private Lazy<Parent> fileCryptView = new Lazy<>(() -> {
+    private final Lazy<Parent> fileCryptView = new Lazy<>(() -> {
 
         try {
 

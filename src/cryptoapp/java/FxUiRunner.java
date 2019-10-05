@@ -6,7 +6,7 @@ import java.util.function.BiConsumer;
 
 public class FxUiRunner<T, U> implements BiConsumer<T, U> {
 
-    private BiConsumer<T, U> task;
+    private final BiConsumer<T, U> task;
 
     public FxUiRunner(BiConsumer<T, U> task) {
 
@@ -16,8 +16,6 @@ public class FxUiRunner<T, U> implements BiConsumer<T, U> {
     @Override
     public void accept(T obj, U obj2) {
 
-        Platform.runLater(() -> {
-            task.accept(obj, obj2);
-        });
+        Platform.runLater(() -> task.accept(obj, obj2));
     }
 }

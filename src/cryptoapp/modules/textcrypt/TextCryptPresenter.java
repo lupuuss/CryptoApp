@@ -12,9 +12,9 @@ import java.util.concurrent.CompletionException;
 class TextCryptPresenter extends Presenter<TextCryptView> {
 
     private TextCryptView.Mode currentMode = TextCryptView.Mode.ENCRYPT;
-    private Encrypter encrypter;
-    private Decrypter decrypter;
-    private KeyGenerator keyGenerator;
+    private final Encrypter encrypter;
+    private final Decrypter decrypter;
+    private final KeyGenerator keyGenerator;
 
     private String key;
 

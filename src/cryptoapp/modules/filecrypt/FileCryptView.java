@@ -9,4 +9,10 @@ public interface FileCryptView extends View {
     void setKeyFileButtonText(String text);
 
     void setOutputDirectoryButtonText(String text);
+
+    void setEncryptProgressIndicatorVisibility(boolean isVisible);
+
+    void setDecryptProgressIndicatorVisibility(boolean isVisible);
+
+    void setUiAvailability(boolean isAvailable);
 }

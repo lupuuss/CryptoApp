@@ -70,7 +70,7 @@
                                         -fx-max-height: 90;
                                 </style>
                         </ProgressIndicator>
-                        <Button text="Encrypt" fx:id="encryptButton" >
+                        <Button text="Encrypt" fx:id="encryptionButton" >
                                 <style>
                                         -fx-min-width: 60;
                                         -fx-min-height: 60;
@@ -89,7 +89,7 @@
                                         -fx-max-height: 90;
                                 </style>
                         </ProgressIndicator>
-                        <Button text="Decrypt" fx:id="decryptButton" >
+                        <Button text="Decrypt" fx:id="decryptionButton" >
                                 <style>
                                         -fx-min-width: 60;
                                         -fx-min-height: 60;

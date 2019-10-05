@@ -15,10 +15,10 @@ public class FileCryptViewImpl extends ActivityChild implements FileCryptView {
     private Button cryptFileChooserButton;
 
     @FXML
-    private Button encryptButton;
+    private Button encryptionButton;
 
     @FXML
-    private Button decryptButton;
+    private Button decryptionButton;
 
     @FXML
     private Button keyFileChooserButton;
@@ -41,15 +41,20 @@ public class FileCryptViewImpl extends ActivityChild implements FileCryptView {
 
     private File lastPickedDir;
 
-    private File chooseFile() {
+    private File chooseFile(String windowName) {
         var fileChooser = new FileChooser();
+
+        fileChooser.setTitle(windowName);
 
         if (lastPickedDir != null) {
             fileChooser.setInitialDirectory(lastPickedDir);
         }
 
         var file = fileChooser.showOpenDialog(parentActivity.getCurrentStage());
-        lastPickedDir = file.getParentFile();
+
+        if (file != null && file.getParentFile() != null) {
+            lastPickedDir = file.getParentFile();
+        }
 
         return file;
     }
@@ -57,13 +62,13 @@ public class FileCryptViewImpl extends ActivityChild implements FileCryptView {
     @FXML
     public void onCryptFileChooserButtonClick() {
 
-        presenter.setCryptFile(chooseFile());
+        presenter.setCryptFile(chooseFile(defaultCryptFileChooserText));
     }
 
     @FXML
     public void onKeyFileChooserButtonClick() {
 
-        presenter.setKeyFile(chooseFile());
+        presenter.setKeyFile(chooseFile(defaultKeyFileChooserText));
     }
 
     @FXML
@@ -71,13 +76,18 @@ public class FileCryptViewImpl extends ActivityChild implements FileCryptView {
 
         var chooser = new DirectoryChooser();
 
+        chooser.setTitle(defaultOutputDirectoryChooserText);
+
         if (lastPickedDir != null) {
             chooser.setInitialDirectory(lastPickedDir);
         }
 
         var dir = chooser.showDialog(parentActivity.getCurrentStage());
 
-        lastPickedDir = dir.getParentFile();
+        if (dir != null) {
+            lastPickedDir = dir;
+        }
+
         presenter.setOutputDirectory(dir);
     }
 
@@ -106,5 +116,25 @@ public class FileCryptViewImpl extends ActivityChild implements FileCryptView {
     @Override
     public void setOutputDirectoryButtonText(String text) {
         outputFolderChooserButton.setText(text);
+    }
+
+    @Override
+    public void setEncryptProgressIndicatorVisibility(boolean isVisible) {
+        encryptionProgressIndicator.setVisible(isVisible);
+    }
+
+    @Override
+    public void setDecryptProgressIndicatorVisibility(boolean isVisible) {
+        decryptionProgressIndicator.setVisible(isVisible);
+    }
+
+    @Override
+    public void setUiAvailability(boolean isAvailable) {
+
+        cryptFileChooserButton.setDisable(!isAvailable);
+        keyFileChooserButton.setDisable(!isAvailable);
+        outputFolderChooserButton.setDisable(!isAvailable);
+        encryptionButton.setDisable(!isAvailable);
+        decryptionButton.setDisable(!isAvailable);
     }
 }

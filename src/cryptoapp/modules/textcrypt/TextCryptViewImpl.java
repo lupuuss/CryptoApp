@@ -1,7 +1,6 @@
 package cryptoapp.modules.textcrypt;
 
 import cryptoapp.model.crypt.Crypt;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -28,19 +27,19 @@ public class TextCryptViewImpl implements TextCryptView {
     private TextCryptPresenter presenter;
 
     @FXML
-    public void onEncryptTextAreaClick(Event e) {
+    public void onEncryptTextAreaClick() {
 
         presenter.changeCryptMode(Mode.ENCRYPT);
     }
 
     @FXML
-    public void onCryptButtonClick(Event e) {
+    public void onCryptButtonClick() {
 
         presenter.crypt();
     }
 
     @FXML
-    public void onDecryptTextAreaClick(Event e) {
+    public void onDecryptTextAreaClick() {
 
         presenter.changeCryptMode(Mode.DECRYPT);
     }

@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ProgressIndicator?>
 
+<?import javafx.scene.control.Label?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="cryptoapp.modules.filecrypt.FileCryptViewImpl"
@@ -70,7 +71,7 @@
                                         -fx-max-height: 90;
                                 </style>
                         </ProgressIndicator>
-                        <Button text="Encrypt" fx:id="encryptionButton" >
+                        <Button text="Encrypt" fx:id="encryptionButton" onAction="#onEncryptionButtonClick" >
                                 <style>
                                         -fx-min-width: 60;
                                         -fx-min-height: 60;
@@ -89,7 +90,7 @@
                                         -fx-max-height: 90;
                                 </style>
                         </ProgressIndicator>
-                        <Button text="Decrypt" fx:id="decryptionButton" >
+                        <Button text="Decrypt" fx:id="decryptionButton" onAction="#onDecryptionButtonClick">
                                 <style>
                                         -fx-min-width: 60;
                                         -fx-min-height: 60;
@@ -100,4 +101,6 @@
                         </Button>
                 </StackPane>
         </HBox>
+
+        <Label fx:id="errorMsgLabel" textFill="red" />
 </VBox>

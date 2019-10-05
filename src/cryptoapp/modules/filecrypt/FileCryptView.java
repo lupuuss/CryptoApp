@@ -15,4 +15,6 @@ public interface FileCryptView extends View {
     void setDecryptProgressIndicatorVisibility(boolean isVisible);
 
     void setUiAvailability(boolean isAvailable);
+
+    void setErrorMsg(String message);
 }

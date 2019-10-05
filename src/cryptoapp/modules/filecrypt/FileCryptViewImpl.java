@@ -1,8 +1,11 @@
 package cryptoapp.modules.filecrypt;
 
 import cryptoapp.base.ActivityChild;
+import cryptoapp.base.KeyGenerator;
+import cryptoapp.model.crypt.Crypt;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
@@ -34,6 +37,9 @@ public class FileCryptViewImpl extends ActivityChild implements FileCryptView {
 
     @FXML
     private ProgressIndicator decryptionProgressIndicator;
+
+    @FXML
+    private Label errorMsgLabel;
 
     private String defaultCryptFileChooserText;
     private String defaultKeyFileChooserText;
@@ -94,10 +100,27 @@ public class FileCryptViewImpl extends ActivityChild implements FileCryptView {
         presenter.setOutputDirectory(dir);
     }
 
+    @FXML
+    public void onEncryptionButtonClick() {
+
+        presenter.encrypt();
+    }
+
+    @FXML
+    public void onDecryptionButtonClick() {
+
+        presenter.decrypt();
+    }
+
     @Override
     public void onStart() {
 
-        presenter = new FileCryptPresenter();
+        presenter = new FileCryptPresenter(
+                Crypt.getOneTimePadEncrypter(),
+                Crypt.getOneTimePadDecrypter(),
+                Crypt.getKeyGenerator()
+        );
+
         presenter.inject(this);
 
         defaultCryptFileChooserText = cryptFileChooserButton.getText();
@@ -139,5 +162,11 @@ public class FileCryptViewImpl extends ActivityChild implements FileCryptView {
         outputFolderChooserButton.setDisable(!isAvailable);
         encryptionButton.setDisable(!isAvailable);
         decryptionButton.setDisable(!isAvailable);
+    }
+
+    @Override
+    public void setErrorMsg(String message) {
+
+        errorMsgLabel.setText(message);
     }
 }

@@ -4,7 +4,7 @@ import cryptoapp.base.Decrypter;
 import cryptoapp.base.Encrypter;
 import cryptoapp.base.KeyGenerator;
 import cryptoapp.base.Presenter;
-import cryptoapp.java.FxUiRunner;
+import cryptoapp.java.FxBiConsumer;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
@@ -62,7 +62,7 @@ class TextCryptPresenter extends Presenter<TextCryptView> {
                 return decrypter.decrypt(data, key);
             }
 
-        }).whenComplete(new FxUiRunner<>((str, exception) -> {
+        }).whenComplete(new FxBiConsumer<>((str, exception) -> {
 
             view.setUiAvailability(true);
             view.setCryptProgressIndicatorVisibility(false);

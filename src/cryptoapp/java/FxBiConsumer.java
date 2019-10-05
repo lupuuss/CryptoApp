@@ -7,11 +7,11 @@ import java.util.function.BiConsumer;
 /**
  * Runs BiConsumer action on JavaFx UI Thread.
  */
-public class FxUiRunner<T, U> implements BiConsumer<T, U> {
+public class FxBiConsumer<T, U> implements BiConsumer<T, U> {
 
     private final BiConsumer<T, U> task;
 
-    public FxUiRunner(BiConsumer<T, U> task) {
+    public FxBiConsumer(BiConsumer<T, U> task) {
 
         this.task = task;
     }

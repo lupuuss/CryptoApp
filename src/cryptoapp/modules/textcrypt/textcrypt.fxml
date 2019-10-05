@@ -23,7 +23,7 @@
                 -fx-max-height: 90;
             </style>
         </ProgressIndicator>
-        <Button text="Encrypt" fx:id="cryptButton" onMouseClicked="#onCryptButtonClick">
+        <Button text="Encrypt" fx:id="cryptButton" onAction="#onCryptButtonClick">
             <style>
                 -fx-min-width: 60;
                 -fx-min-height: 60;

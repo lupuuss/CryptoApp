@@ -32,13 +32,17 @@ class TextCryptPresenter extends Presenter<TextCryptView> {
 
     void crypt() {
 
-        view.setErrorMsg(null);
-        view.setUiAvailability(false);
-        view.setCryptProgressIndicatorVisibility(true);
-
         var data = currentMode == TextCryptView.Mode.ENCRYPT
                 ? view.getEncryptText()
                 : view.getDecryptText();
+
+        if (data == null) {
+            return;
+        }
+
+        view.setErrorMsg(null);
+        view.setUiAvailability(false);
+        view.setCryptProgressIndicatorVisibility(true);
 
         key = view.getKeyText();
 

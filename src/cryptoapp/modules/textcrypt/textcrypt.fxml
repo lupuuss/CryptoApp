@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="cryptoapp.modules.textcrypt.TextCryptViewImpl"
+      alignment="CENTER">
+    <style>
+        -fx-spacing: 10;
+        -fx-padding: 10;
+    </style>
+
+    <TextArea fx:id="encryptTextArea" promptText="Enter your message here..." onMouseClicked="#onEncryptTextAreaClick" />
+
+    <StackPane>
+        <ProgressIndicator fx:id="cryptIndicator" visible="false">
+            <style>
+                -fx-min-width: 90;
+                -fx-min-height: 90;
+                -fx-max-width: 90;
+                -fx-max-height: 90;
+            </style>
+        </ProgressIndicator>
+        <Button text="Encrypt" fx:id="cryptButton" onMouseClicked="#onCryptButtonClick">
+            <style>
+                -fx-min-width: 60;
+                -fx-min-height: 60;
+                -fx-max-width: 60;
+                -fx-max-height: 60;
+                -fx-background-radius: 5em;
+            </style>
+        </Button>
+    </StackPane>
+
+    <TextField fx:id="keyTextField" promptText="Enter a key or let it be generated..." alignment="CENTER" />
+
+    <TextArea fx:id="decryptTextArea" promptText="Enter your encrypted message here..." onMouseClicked="#onDecryptTextAreaClick" />
+
+    <Label fx:id="errorMsgLabel" textFill="red"/>
+
+</VBox>

@@ -1,0 +1,39 @@
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.layout.HBox?>
+
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<GridPane fx:controller="cryptoapp.modules.main.MainView"
+          fx:id="root"
+          xmlns:fx="http://javafx.com/fxml" alignment="center">
+    <style>
+        -fx-padding: 20;
+        -fx-spacing: 20;
+    </style>
+    <rowConstraints>
+        <RowConstraints percentHeight="10.0"/>
+        <RowConstraints percentHeight="90.0"/>
+    </rowConstraints>
+
+    <HBox alignment="CENTER" GridPane.rowIndex="0">
+        <ToggleButton text="Text" fx:id="textToggle">
+            <style>
+                -fx-font-size: 15;
+                -fx-border-radius: 10 0 0 10;
+                -fx-background-radius: 10 0 0 10;
+            </style>
+        </ToggleButton>
+
+        <ToggleButton text="File" fx:id="fileToggle">
+            <style>
+                -fx-font-size: 15;
+                -fx-border-radius: 0 10 10 0;
+                -fx-background-radius: 0 10 10 0;
+            </style>
+        </ToggleButton>
+    </HBox>
+
+
+    <VBox fx:id="currentParentContainer" alignment="CENTER" GridPane.rowIndex="1"/>
+</GridPane>

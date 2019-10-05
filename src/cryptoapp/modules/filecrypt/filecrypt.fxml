@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ProgressIndicator?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="cryptoapp.modules.filecrypt.FileCryptViewImpl"
+      alignment="TOP_CENTER">
+
+        <style>
+                -fx-padding: 20;
+                -fx-spacing: 20;
+        </style>
+
+        <Button fx:id="fileChooserButton" text="Choose file..." alignment="CENTER">
+                <style>
+                        -fx-min-width: 200;
+                        -fx-min-height: 60;
+                        -fx-max-width: 200;
+                        -fx-max-height: 60;
+                        -fx-background-radius: 5em;
+                </style>
+        </Button>
+
+        <Button fx:id="keyFileChooserButton" text="Choose file with a key..."  alignment="CENTER">
+                <style>
+                        -fx-min-width: 200;
+                        -fx-min-height: 60;
+                        -fx-max-width: 200;
+                        -fx-max-height: 60;
+                        -fx-background-radius: 5em;
+                </style>
+        </Button>
+
+        <Button fx:id="outputFolderChooserButton" text="Choose output directory..."  alignment="CENTER">
+                <style>
+                        -fx-min-width: 200;
+                        -fx-min-height: 60;
+                        -fx-max-width: 200;
+                        -fx-max-height: 60;
+                        -fx-background-radius: 5em;
+                </style>
+        </Button>
+
+        <HBox alignment="TOP_CENTER">
+                <style>
+                        -fx-spacing: 20;
+                </style>
+
+                <StackPane>
+                        <ProgressIndicator fx:id="encryptionProgressIndicator" visible="false">
+                                <style>
+                                        -fx-min-width: 90;
+                                        -fx-min-height: 90;
+                                        -fx-max-width: 90;
+                                        -fx-max-height: 90;
+                                </style>
+                        </ProgressIndicator>
+                        <Button text="Encrypt" fx:id="encryptButton" >
+                                <style>
+                                        -fx-min-width: 60;
+                                        -fx-min-height: 60;
+                                        -fx-max-width: 60;
+                                        -fx-max-height: 60;
+                                        -fx-background-radius: 5em;
+                                </style>
+                        </Button>
+                </StackPane>
+                <StackPane>
+                        <ProgressIndicator fx:id="decryptionProgressIndicator" visible="false">
+                                <style>
+                                        -fx-min-width: 90;
+                                        -fx-min-height: 90;
+                                        -fx-max-width: 90;
+                                        -fx-max-height: 90;
+                                </style>
+                        </ProgressIndicator>
+                        <Button text="Decrypt" fx:id="decryptButton" >
+                                <style>
+                                        -fx-min-width: 60;
+                                        -fx-min-height: 60;
+                                        -fx-max-width: 60;
+                                        -fx-max-height: 60;
+                                        -fx-background-radius: 5em;
+                                </style>
+                        </Button>
+                </StackPane>
+        </HBox>
+</VBox>

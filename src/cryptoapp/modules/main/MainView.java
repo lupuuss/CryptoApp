@@ -8,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
 /**
@@ -59,8 +58,8 @@ public class MainView extends ActivityChild {
     @Override
     public void onStart() {
 
-        textToggle.setSelected(true);
-        currentParentContainer.getChildren().add(textCryptView.getValue());
+        fileToggle.setSelected(true);
+        currentParentContainer.getChildren().add(fileCryptView.getValue());
 
         textToggle.setOnMouseClicked( mouseEvent ->  {
 

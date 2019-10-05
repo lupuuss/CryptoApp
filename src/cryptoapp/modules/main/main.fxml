@@ -16,7 +16,7 @@
     </rowConstraints>
 
     <HBox alignment="CENTER" GridPane.rowIndex="0">
-        <ToggleButton text="Text" fx:id="textToggle">
+        <ToggleButton text="File" fx:id="fileToggle">
             <style>
                 -fx-font-size: 15;
                 -fx-border-radius: 10 0 0 10;
@@ -24,7 +24,7 @@
             </style>
         </ToggleButton>
 
-        <ToggleButton text="File" fx:id="fileToggle">
+        <ToggleButton text="Text" fx:id="textToggle">
             <style>
                 -fx-font-size: 15;
                 -fx-border-radius: 0 10 10 0;

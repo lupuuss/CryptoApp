@@ -4,6 +4,7 @@ import cryptoapp.base.Decrypter;
 import cryptoapp.base.Encrypter;
 import cryptoapp.base.KeyGenerator;
 
+import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -41,6 +42,16 @@ public class Crypt {
 
     public static KeyGenerator getKeyGenerator() {
 
-        return keyLength -> "XDD";
+        return new KeyGenerator() {
+            @Override
+            public String generate(int keyLength) {
+                return "12425346";
+            }
+
+            @Override
+            public File generateFile(long keyLength) {
+                return null;
+            }
+        };
     }
 }

@@ -14,7 +14,11 @@
                 -fx-spacing: 20;
         </style>
 
-        <Button fx:id="fileChooserButton" text="Choose file..." alignment="CENTER">
+        <Button fx:id="cryptFileChooserButton"
+                text="Choose file..."
+                alignment="CENTER"
+                onAction="#onCryptFileChooserButtonClick"
+                textOverrun="LEADING_WORD_ELLIPSIS">
                 <style>
                         -fx-min-width: 200;
                         -fx-min-height: 60;
@@ -24,7 +28,11 @@
                 </style>
         </Button>
 
-        <Button fx:id="keyFileChooserButton" text="Choose file with a key..."  alignment="CENTER">
+        <Button fx:id="keyFileChooserButton"
+                text="Choose file with a key..."
+                alignment="CENTER"
+                onAction="#onKeyFileChooserButtonClick"
+                textOverrun="LEADING_WORD_ELLIPSIS">
                 <style>
                         -fx-min-width: 200;
                         -fx-min-height: 60;
@@ -34,7 +42,11 @@
                 </style>
         </Button>
 
-        <Button fx:id="outputFolderChooserButton" text="Choose output directory..."  alignment="CENTER">
+        <Button fx:id="outputFolderChooserButton"
+                text="Choose output directory..."
+                alignment="CENTER"
+                onAction="#onOutputDirectoryChooserClick"
+                textOverrun="LEADING_WORD_ELLIPSIS">
                 <style>
                         -fx-min-width: 200;
                         -fx-min-height: 60;

@@ -1,9 +1,9 @@
 package cryptoapp.modules.main;
 
-import cryptoapp.base.View;
+import cryptoapp.base.ActivityChild;
 import cryptoapp.java.Lazy;
-import cryptoapp.modules.filecrypt.FileCryptView;
-import cryptoapp.modules.textcrypt.TextCryptView;
+import cryptoapp.modules.filecrypt.FileCryptViewImpl;
+import cryptoapp.modules.textcrypt.TextCryptViewImpl;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,7 +12,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
 
-public class MainView implements View {
+public class MainView extends ActivityChild {
 
     @FXML
     private GridPane root;
@@ -29,7 +29,7 @@ public class MainView implements View {
 
             var fxml = new FXMLLoader(getClass().getResource("..\\textcrypt\\textcrypt.fxml"));
             var parent = fxml.<Parent>load();
-            fxml.<TextCryptView>getController().onStart();
+            fxml.<TextCryptViewImpl>getController().onStartChild(parentActivity);
 
             return parent;
 
@@ -45,7 +45,7 @@ public class MainView implements View {
 
             var fxml = new FXMLLoader(getClass().getResource("..\\filecrypt\\filecrypt.fxml"));
             var parent = fxml.<Parent>load();
-            fxml.<FileCryptView>getController().onStart();
+            fxml.<FileCryptViewImpl>getController().onStartChild(parentActivity);
 
             return parent;
 

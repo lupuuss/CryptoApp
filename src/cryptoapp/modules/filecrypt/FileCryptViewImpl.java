@@ -1,11 +1,12 @@
 package cryptoapp.modules.filecrypt;
 
+import cryptoapp.base.ActivityChild;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 
-public class FileCryptViewImpl implements FileCryptView {
+public class FileCryptViewImpl extends ActivityChild implements FileCryptView {
 
     @FXML
     private Button fileChooserButton;

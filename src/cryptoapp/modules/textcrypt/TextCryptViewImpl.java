@@ -1,10 +1,11 @@
 package cryptoapp.modules.textcrypt;
 
+import cryptoapp.base.ActivityChild;
 import cryptoapp.model.crypt.Crypt;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
-public class TextCryptViewImpl implements TextCryptView {
+public class TextCryptViewImpl extends ActivityChild implements TextCryptView {
 
     @FXML
     private TextArea encryptTextArea;

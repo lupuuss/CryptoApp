@@ -10,10 +10,12 @@ import javafx.stage.Stage;
 @SuppressWarnings({"unused", "WeakerAccess"})
 public abstract class Activity<T> {
 
-    private String title;
-    private Scene scene;
-    private Parent parent;
-    private T controller;
+    protected String title;
+    protected Scene scene;
+    protected Parent parent;
+    protected T controller;
+
+    private Stage currentStage;
 
     public Activity(String fxml, String title) throws Exception {
 
@@ -25,6 +27,7 @@ public abstract class Activity<T> {
     }
 
     public void setOnStage(Stage primaryStage) throws Exception {
+        currentStage = primaryStage;
         primaryStage.setTitle(title);
         primaryStage.setScene(scene);
         onStart();
@@ -44,23 +47,15 @@ public abstract class Activity<T> {
         return scene;
     }
 
-    public void setScene(Scene scene) {
-        this.scene = scene;
-    }
-
     public Parent getParent() {
         return parent;
-    }
-
-    public void setParent(Parent parent) {
-        this.parent = parent;
     }
 
     public T getController() {
         return controller;
     }
 
-    public void setController(T controller) {
-        this.controller = controller;
+    public Stage getCurrentStage() {
+        return currentStage;
     }
 }

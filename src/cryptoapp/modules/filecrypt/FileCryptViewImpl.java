@@ -9,6 +9,9 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 
+/**
+ * View associated with filecrypt.fxml file
+ */
 public class FileCryptViewImpl extends ActivityChild implements FileCryptView {
 
     @FXML

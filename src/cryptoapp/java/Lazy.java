@@ -1,5 +1,8 @@
 package cryptoapp.java;
 
+/**
+ * Implements lazy initialization pattern.
+ */
 public class Lazy <T> {
 
     public interface Producer<L> {

@@ -5,6 +5,9 @@ import cryptoapp.model.crypt.Crypt;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
+/**
+ * View associated with textcrypt.fxml
+ */
 public class TextCryptViewImpl extends ActivityChild implements TextCryptView {
 
     @FXML

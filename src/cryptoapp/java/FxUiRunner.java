@@ -4,6 +4,9 @@ import javafx.application.Platform;
 
 import java.util.function.BiConsumer;
 
+/**
+ * Runs BiConsumer action on JavaFx UI Thread.
+ */
 public class FxUiRunner<T, U> implements BiConsumer<T, U> {
 
     private final BiConsumer<T, U> task;

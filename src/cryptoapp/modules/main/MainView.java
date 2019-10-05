@@ -11,7 +11,9 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
-
+/**
+ * View associated with main.fxml
+ */
 public class MainView extends ActivityChild {
 
     @FXML

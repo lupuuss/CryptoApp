@@ -6,5 +6,5 @@ import java.io.OutputStream;
 public interface Decrypter {
 
     String decrypt(String text, String key);
-    void decrypt(InputStream in, OutputStream out, InputStream key);
+    void decrypt(InputStream in, OutputStream out, InputStream key) throws Exception;
 }

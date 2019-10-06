@@ -156,7 +156,7 @@ class FileCryptPresenter extends Presenter<FileCryptView> {
         }));
     }
 
-    private class NoKeyFileException extends CompletionException {
+    private static class NoKeyFileException extends CompletionException {
 
         NoKeyFileException() {
             super("You have to choose file with a decryption key!");

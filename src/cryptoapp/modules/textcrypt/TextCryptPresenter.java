@@ -9,6 +9,7 @@ import cryptoapp.java.FxBiConsumer;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 
+@SuppressWarnings("FieldCanBeLocal")
 class TextCryptPresenter extends Presenter<TextCryptView> {
 
     private TextCryptView.Mode currentMode = TextCryptView.Mode.ENCRYPT;
@@ -17,6 +18,8 @@ class TextCryptPresenter extends Presenter<TextCryptView> {
     private final KeyGenerator keyGenerator;
 
     private String key;
+
+    private final String noDataErrorMsg = "You have to enter message to encryption/decryption!";
 
     TextCryptPresenter(Encrypter encrypter, Decrypter decrypter, KeyGenerator keyGenerator) {
         this.encrypter = encrypter;
@@ -36,7 +39,8 @@ class TextCryptPresenter extends Presenter<TextCryptView> {
                 ? view.getEncryptText()
                 : view.getDecryptText();
 
-        if (data == null) {
+        if (data == null || data.equals("")) {
+            view.setErrorMsg(noDataErrorMsg);
             return;
         }
 

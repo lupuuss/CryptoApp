@@ -1,7 +1,6 @@
 package cryptoapp.modules.filecrypt;
 
 import cryptoapp.base.ActivityChild;
-import cryptoapp.base.KeyGenerator;
 import cryptoapp.model.crypt.Crypt;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -168,5 +167,20 @@ public class FileCryptViewImpl extends ActivityChild implements FileCryptView {
     public void setErrorMsg(String message) {
 
         errorMsgLabel.setText(message);
+    }
+
+    @Override
+    public void setCryptFileButtonTextDefault() {
+        cryptFileChooserButton.setText(defaultCryptFileChooserText);
+    }
+
+    @Override
+    public void setKeyFileButtonTextDefault() {
+        keyFileChooserButton.setText(defaultKeyFileChooserText);
+    }
+
+    @Override
+    public void setOutputDirectoryButtonTextDefault() {
+        outputFolderChooserButton.setText(defaultOutputDirectoryChooserText);
     }
 }

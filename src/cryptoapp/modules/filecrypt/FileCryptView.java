@@ -17,4 +17,10 @@ public interface FileCryptView extends View {
     void setUiAvailability(boolean isAvailable);
 
     void setErrorMsg(String message);
+
+    void setCryptFileButtonTextDefault();
+
+    void setKeyFileButtonTextDefault();
+
+    void setOutputDirectoryButtonTextDefault();
 }

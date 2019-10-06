@@ -33,28 +33,38 @@ class FileCryptPresenter extends Presenter<FileCryptView> {
 
     void setCryptFile(File file) {
 
-        if (file != null) {
+        currentCryptFile = file;
 
-            currentCryptFile = file;
+        if (file != null) {
             view.setCryptFileButtonText(file.getAbsolutePath());
+        } else {
+            view.setCryptFileButtonTextDefault();
         }
     }
 
     void setKeyFile(File file) {
 
+        currentKeyFile = file;
+
         if (file != null) {
 
-            currentKeyFile = file;
             view.setKeyFileButtonText(file.getAbsolutePath());
+        } else {
+
+            view.setKeyFileButtonTextDefault();
         }
     }
 
     void setOutputDirectory(File dir) {
 
+        currentOutputDirectory = dir;
+
         if (dir != null) {
 
-            currentOutputDirectory = dir;
             view.setOutputDirectoryButtonText(dir.getAbsolutePath());
+
+        } else {
+            view.setOutputDirectoryButtonTextDefault();
         }
     }
 
@@ -107,6 +117,9 @@ class FileCryptPresenter extends Presenter<FileCryptView> {
             if (exception != null) {
 
                 view.setErrorMsg(exception.getMessage());
+            } else {
+
+                cleanAfterCrypt();
             }
 
         }));
@@ -152,8 +165,21 @@ class FileCryptPresenter extends Presenter<FileCryptView> {
             if (exception != null) {
 
                 view.setErrorMsg(exception.getMessage());
+            } else {
+
+                cleanAfterCrypt();
             }
         }));
+    }
+
+    private void cleanAfterCrypt() {
+        currentOutputDirectory = null;
+        currentKeyFile = null;
+        currentCryptFile = null;
+
+        view.setOutputDirectoryButtonTextDefault();
+        view.setCryptFileButtonTextDefault();
+        view.setKeyFileButtonTextDefault();
     }
 
     private static class NoKeyFileException extends CompletionException {

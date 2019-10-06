@@ -79,6 +79,7 @@ class TextCryptPresenter extends Presenter<TextCryptView> {
             } else if (currentMode == TextCryptView.Mode.ENCRYPT) {
 
                 view.setDecryptAreaText(str);
+
             } else {
 
                 view.setEncryptAreaText(str);
@@ -86,7 +87,7 @@ class TextCryptPresenter extends Presenter<TextCryptView> {
         }));
     }
 
-    static class NoKeyForDecryptionException extends CompletionException {
+    private static class NoKeyForDecryptionException extends CompletionException {
 
         NoKeyForDecryptionException() {
             super("Key for decryption must be entered!");

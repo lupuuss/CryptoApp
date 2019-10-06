@@ -12,6 +12,7 @@ public class CryptoApp extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
+        primaryStage.setMinWidth(550);
         new MainActivity().setOnStage(primaryStage);
         primaryStage.show();
     }

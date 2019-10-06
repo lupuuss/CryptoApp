@@ -29,10 +29,11 @@
                 </style>
         </Button>
 
-        <Button fx:id="keyFileChooserButton"
-                text="Choose file with a key..."
+
+        <Button fx:id="outputFolderChooserButton"
+                text="Choose output directory..."
                 alignment="CENTER"
-                onAction="#onKeyFileChooserButtonClick"
+                onAction="#onOutputDirectoryChooserClick"
                 textOverrun="LEADING_WORD_ELLIPSIS">
                 <style>
                         -fx-min-width: 200;
@@ -43,10 +44,10 @@
                 </style>
         </Button>
 
-        <Button fx:id="outputFolderChooserButton"
-                text="Choose output directory..."
+        <Button fx:id="keyFileChooserButton"
+                text="Choose file with a key..."
                 alignment="CENTER"
-                onAction="#onOutputDirectoryChooserClick"
+                onAction="#onKeyFileChooserButtonClick"
                 textOverrun="LEADING_WORD_ELLIPSIS">
                 <style>
                         -fx-min-width: 200;

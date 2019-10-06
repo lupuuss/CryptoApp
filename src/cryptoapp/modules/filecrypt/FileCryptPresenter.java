@@ -132,7 +132,7 @@ class FileCryptPresenter extends Presenter<FileCryptView> {
 
                 var outputFile = new File(currentOutputDirectory, currentCryptFile.getName() + "_decrypted");
 
-                encrypter.encrypt(
+                decrypter.decrypt(
                         new FileInputStream(currentCryptFile),
                         new FileOutputStream(outputFile),
                         new FileInputStream(currentKeyFile)

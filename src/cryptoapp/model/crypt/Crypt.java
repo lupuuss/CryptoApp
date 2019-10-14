@@ -3,6 +3,8 @@ package cryptoapp.model.crypt;
 import cryptoapp.base.Decrypter;
 import cryptoapp.base.Encrypter;
 import cryptoapp.base.KeyGenerator;
+import cryptoapp.model.crypt.onetimepad.OneTimePadDecrypter;
+import cryptoapp.model.crypt.onetimepad.OneTimePadEncrypter;
 
 import java.io.File;
 import java.io.InputStream;
@@ -12,46 +14,16 @@ public class Crypt {
 
     public static Decrypter getOneTimePadDecrypter() {
 
-        return new Decrypter() {
-            @Override
-            public String decrypt(String text, String key) {
-                return null;
-            }
-
-            @Override
-            public void decrypt(InputStream in, OutputStream out, InputStream key) {
-
-            }
-        };
+        return new OneTimePadDecrypter();
     }
 
     public static Encrypter getOneTimePadEncrypter() {
 
-        return new Encrypter() {
-            @Override
-            public String encrypt(String text, String key) {
-                return null;
-            }
-
-            @Override
-            public void encrypt(InputStream in, OutputStream out, InputStream key) {
-
-            }
-        };
+        return new OneTimePadEncrypter();
     }
 
     public static KeyGenerator getKeyGenerator() {
 
-        return new KeyGenerator() {
-            @Override
-            public String generate(int keyLength) {
-                return "12425346";
-            }
-
-            @Override
-            public File generateFile(long keyLength) {
-                return null;
-            }
-        };
+        return new BasicKeyGenerator();
     }
 }

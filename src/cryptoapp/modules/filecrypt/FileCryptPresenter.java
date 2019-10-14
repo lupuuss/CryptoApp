@@ -88,7 +88,7 @@ class FileCryptPresenter extends Presenter<FileCryptView> {
                 if (currentKeyFile == null) {
 
                     keyStream = new FileInputStream(
-                            keyGenerator.generateFile(currentCryptFile.length())
+                            keyGenerator.generateFile(currentCryptFile.length(), currentOutputDirectory)
                     );
 
                 } else {

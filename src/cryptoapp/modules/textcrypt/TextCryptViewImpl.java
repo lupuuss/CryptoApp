@@ -57,6 +57,10 @@ public class TextCryptViewImpl extends ActivityChild implements TextCryptView {
                 Crypt.getKeyGenerator()
         );
         presenter.inject(this);
+
+        encryptTextArea.setTextFormatter(new OnlyCapitalLettersFormatter<>());
+        decryptTextArea.setTextFormatter(new OnlyCapitalLettersFormatter<>());
+        keyTextField.setTextFormatter(new OnlyCapitalLettersFormatter<>());
     }
 
     @Override

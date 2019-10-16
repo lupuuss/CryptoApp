@@ -7,6 +7,9 @@ import java.io.OutputStream;
 
 public class OneTimePadDecrypter implements Decrypter {
 
+    @SuppressWarnings("FieldCanBeLocal")
+    private final int blockSize = 1024 * 1024 * 10;
+
     @Override
     public String decrypt(String text, String key) {
 
@@ -14,12 +17,11 @@ public class OneTimePadDecrypter implements Decrypter {
 
         for (int i = 0; i < text.length() && i < key.length(); i++) {
 
-            int l = text.charAt(i) - key.charAt(i);
-            decrypted.append(l < 0 ? (char)(l + 91) : (char)(l + 65));
-        }
-
-        if (key.length() >= text.length()) {
-            return decrypted.toString();
+            int b = text.charAt(i) - key.charAt(i);
+            if (b < 0) {
+                b += 256;
+            }
+            decrypted.append((char)b);
         }
 
         for (int i = key.length(); i < text.length(); i++) {
@@ -33,5 +35,43 @@ public class OneTimePadDecrypter implements Decrypter {
     @Override
     public void decrypt(InputStream in, OutputStream out, InputStream key) throws Exception {
 
+        byte [] inputBlock;
+        byte [] keyBlock;
+
+        do {
+
+            inputBlock = in.readNBytes(blockSize);
+            keyBlock = key.readNBytes(blockSize);
+
+            out.write(decrypt(inputBlock, keyBlock));
+
+        } while (inputBlock.length == blockSize);
+
+        in.close();
+        out.close();
+        key.close();
     }
+
+    @SuppressWarnings("ManualArrayCopy")
+    private byte[] decrypt(byte[] encryptedBlock, byte[] keyBlock) {
+
+        byte[] decrypted = new byte[encryptedBlock.length];
+
+        for (int i = 0; i < encryptedBlock.length && i < keyBlock.length; i++) {
+
+            int b = encryptedBlock[i] - keyBlock[i];
+            if (b < 0) {
+                b += 256;
+            }
+            decrypted[i] = (byte)b;
+        }
+
+        for (int i = keyBlock.length; i < encryptedBlock.length; i++) {
+
+            decrypted[i] = encryptedBlock[i];
+        }
+
+        return decrypted;
+    }
+
 }

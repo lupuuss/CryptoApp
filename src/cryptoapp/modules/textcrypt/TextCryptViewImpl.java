@@ -5,6 +5,8 @@ import cryptoapp.model.crypt.Crypt;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
+import java.nio.charset.Charset;
+
 /**
  * View associated with textcrypt.fxml
  */
@@ -13,8 +15,12 @@ public class TextCryptViewImpl extends ActivityChild implements TextCryptView {
     @FXML
     private TextArea encryptTextArea;
 
+    private byte[] encryptBytes;
+
     @FXML
     private TextArea decryptTextArea;
+
+    private byte[] decryptBytes;
 
     @FXML
     private Button cryptButton;
@@ -24,6 +30,8 @@ public class TextCryptViewImpl extends ActivityChild implements TextCryptView {
 
     @FXML
     private TextField keyTextField;
+
+    private byte[] keyBytes;
 
     @FXML
     private Label errorMsgLabel;
@@ -57,6 +65,12 @@ public class TextCryptViewImpl extends ActivityChild implements TextCryptView {
                 Crypt.getKeyGenerator()
         );
         presenter.inject(this);
+
+        encryptTextArea.textProperty().addListener((observableValue, oldStr, newStr) -> encryptBytes = newStr.getBytes());
+
+        decryptTextArea.textProperty().addListener((observableValue, oldStr, newStr) -> decryptBytes = newStr.getBytes());
+
+        keyTextField.textProperty().addListener((observableValue, oldStr, newStr) -> keyBytes = newStr.getBytes());
     }
 
     @Override
@@ -78,36 +92,37 @@ public class TextCryptViewImpl extends ActivityChild implements TextCryptView {
     }
 
     @Override
-    public void setEncryptAreaText(String text) {
-        encryptTextArea.setText(text);
+    public void setEncryptBytes(byte[] bytes) {
+        encryptTextArea.setText(new String(bytes));
+        encryptBytes = bytes;
     }
 
     @Override
-    public void setDecryptAreaText(String text) {
-        decryptTextArea.setText(text);
+    public void setDecryptBytes(byte[] bytes) {
+        decryptTextArea.setText(new String(bytes));
+        decryptBytes = bytes;
     }
 
     @Override
-    public String getEncryptText() {
-
-        return encryptTextArea.getText();
+    public byte[] getEncryptBytes() {
+        return encryptBytes;
     }
 
     @Override
-    public String getDecryptText() {
-
-        return decryptTextArea.getText();
+    public byte[] getDecryptBytes() {
+        return  decryptBytes;
     }
 
     @Override
-    public void setKeyText(String key) {
-        keyTextField.setText(key);
+    public void setKeyBytes(byte[] key) {
+
+        keyTextField.setText(new String(key));
+        keyBytes = key;
     }
 
     @Override
-    public String getKeyText() {
-
-        return keyTextField.getText();
+    public byte[] getKeyBytes() {
+        return keyBytes;
     }
 
     @Override

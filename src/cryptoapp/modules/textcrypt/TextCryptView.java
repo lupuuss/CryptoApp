@@ -12,17 +12,17 @@ public interface TextCryptView extends View {
 
     void setCryptButtonMode(Mode mode);
 
-    void setEncryptAreaText(String text);
+    void setEncryptBytes(byte[] bytes);
 
-    void setDecryptAreaText(String text);
+    void setDecryptBytes(byte[] bytes);
 
-    String getEncryptText();
+    byte[] getEncryptBytes();
 
-    String getDecryptText();
+    byte[] getDecryptBytes();
 
-    void setKeyText(String key);
+    void setKeyBytes(byte[] key);
 
-    String getKeyText();
+    byte[] getKeyBytes();
 
     void setUiAvailability(boolean isUiAvailable);
 

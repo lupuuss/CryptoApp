@@ -4,6 +4,6 @@ import java.io.File;
 
 public interface KeyGenerator {
 
-    String generate(int keyLength);
+    byte[] generate(int n);
     void generateFile(long length, File destinationFile) throws Exception;
 }

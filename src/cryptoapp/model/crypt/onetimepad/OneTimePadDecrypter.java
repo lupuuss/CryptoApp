@@ -11,28 +11,6 @@ public class OneTimePadDecrypter implements Decrypter {
     private final int blockSize = 1024 * 1024 * 10;
 
     @Override
-    public String decrypt(String text, String key) {
-
-        StringBuilder decrypted = new StringBuilder();
-
-        for (int i = 0; i < text.length() && i < key.length(); i++) {
-
-            int b = text.charAt(i) - key.charAt(i);
-            if (b < 0) {
-                b += 256;
-            }
-            decrypted.append((char)b);
-        }
-
-        for (int i = key.length(); i < text.length(); i++) {
-
-            decrypted.append(text.charAt(i));
-        }
-
-        return decrypted.toString();
-    }
-
-    @Override
     public void decrypt(InputStream in, OutputStream out, InputStream key) throws Exception {
 
         byte [] inputBlock;
@@ -53,22 +31,23 @@ public class OneTimePadDecrypter implements Decrypter {
     }
 
     @SuppressWarnings("ManualArrayCopy")
-    private byte[] decrypt(byte[] encryptedBlock, byte[] keyBlock) {
+    @Override
+    public byte[] decrypt(byte[] bytes, byte[] key) {
 
-        byte[] decrypted = new byte[encryptedBlock.length];
+        byte[] decrypted = new byte[bytes.length];
 
-        for (int i = 0; i < encryptedBlock.length && i < keyBlock.length; i++) {
+        for (int i = 0; i < bytes.length && i < key.length; i++) {
 
-            int b = encryptedBlock[i] - keyBlock[i];
+            int b = bytes[i] - key[i];
             if (b < 0) {
                 b += 256;
             }
             decrypted[i] = (byte)b;
         }
 
-        for (int i = keyBlock.length; i < encryptedBlock.length; i++) {
+        for (int i = key.length; i < bytes.length; i++) {
 
-            decrypted[i] = encryptedBlock[i];
+            decrypted[i] = bytes[i];
         }
 
         return decrypted;

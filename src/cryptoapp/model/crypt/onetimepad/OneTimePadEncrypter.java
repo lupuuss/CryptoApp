@@ -11,28 +11,6 @@ public class OneTimePadEncrypter implements Encrypter {
     private final int blockSize = 1024 * 1024 * 10;
 
     @Override
-    public String encrypt(String text, String key) {
-
-        StringBuilder encrypted = new StringBuilder();
-
-        for (int i = 0; i < text.length() && i < key.length(); i++) {
-
-            encrypted.append(((char)(text.charAt(i) + key.charAt(i)) % 256));
-        }
-
-        if (key.length() >= text.length()) {
-            return encrypted.toString();
-        }
-
-        for (int i = key.length(); i < text.length(); i++) {
-
-            encrypted.append(text.charAt(i));
-        }
-
-        return encrypted.toString();
-    }
-
-    @Override
     public void encrypt(InputStream in, OutputStream out, InputStream key) throws Exception {
 
         byte[] inputBlock;
@@ -53,18 +31,19 @@ public class OneTimePadEncrypter implements Encrypter {
     }
 
     @SuppressWarnings("ManualArrayCopy")
-    private byte[] encrypt(byte[] bytesBlock, byte[] keyBlock) {
+    @Override
+    public byte[] encrypt(byte[] bytes, byte[] key) {
 
-        byte[] encrypted = new byte[bytesBlock.length];
+        byte[] encrypted = new byte[bytes.length];
 
-        for (int i = 0; i < bytesBlock.length && i < keyBlock.length; i++) {
+        for (int i = 0; i < bytes.length && i < key.length; i++) {
 
-            encrypted[i] = (byte)((bytesBlock[i] + keyBlock[i]) % 256);
+            encrypted[i] = (byte)((bytes[i] + key[i]) % 256);
         }
 
-        for (int i = keyBlock.length; i < bytesBlock.length; i++) {
+        for (int i = key.length; i < bytes.length; i++) {
 
-            encrypted[i] = bytesBlock[i];
+            encrypted[i] = bytes[i];
         }
 
         return encrypted;

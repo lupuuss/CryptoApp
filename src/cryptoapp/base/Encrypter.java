@@ -5,6 +5,6 @@ import java.io.OutputStream;
 
 public interface Encrypter {
 
-    String encrypt(String text, String key);
+    byte[] encrypt(byte[] bytes, byte[] key);
     void encrypt(InputStream in, OutputStream out, InputStream key) throws  Exception;
 }

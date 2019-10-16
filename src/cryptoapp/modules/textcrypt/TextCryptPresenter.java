@@ -17,7 +17,7 @@ class TextCryptPresenter extends Presenter<TextCryptView> {
     private final Decrypter decrypter;
     private final KeyGenerator keyGenerator;
 
-    private String key;
+    private byte[] key;
 
     private final String noDataErrorMsg = "You have to enter message to encryption/decryption!";
 
@@ -36,10 +36,10 @@ class TextCryptPresenter extends Presenter<TextCryptView> {
     void crypt() {
 
         var data = currentMode == TextCryptView.Mode.ENCRYPT
-                ? view.getEncryptText()
-                : view.getDecryptText();
+                ? view.getEncryptBytes()
+                : view.getDecryptBytes();
 
-        if (data == null || data.equals("")) {
+        if (data == null || data.length == 0) {
             view.setErrorMsg(noDataErrorMsg);
             return;
         }
@@ -48,17 +48,17 @@ class TextCryptPresenter extends Presenter<TextCryptView> {
         view.setUiAvailability(false);
         view.setCryptProgressIndicatorVisibility(true);
 
-        key = view.getKeyText();
+        key = view.getKeyBytes();
 
-        new CompletableFuture<String>().completeAsync(() -> {
+        new CompletableFuture<byte[]>().completeAsync(() -> {
 
-            if (currentMode == TextCryptView.Mode.DECRYPT && (key == null || key.equals(""))) {
+            if (currentMode == TextCryptView.Mode.DECRYPT && (key == null || key.length == 0)) {
 
                 throw new NoKeyForDecryptionException();
 
-            } else if (currentMode == TextCryptView.Mode.ENCRYPT && (key == null || key.equals(""))) {
+            } else if (currentMode == TextCryptView.Mode.ENCRYPT && (key == null || key.length == 0)) {
 
-                key = keyGenerator.generate(data.length());
+                key = keyGenerator.generate(data.length);
             }
 
             if (currentMode == TextCryptView.Mode.ENCRYPT) {
@@ -70,11 +70,11 @@ class TextCryptPresenter extends Presenter<TextCryptView> {
                 return decrypter.decrypt(data, key);
             }
 
-        }).whenComplete(new FxBiConsumer<>((str, exception) -> {
+        }).whenComplete(new FxBiConsumer<>((bytes, exception) -> {
 
             view.setUiAvailability(true);
             view.setCryptProgressIndicatorVisibility(false);
-            view.setKeyText(key);
+            view.setKeyBytes(key);
 
             if (exception != null) {
 
@@ -82,11 +82,11 @@ class TextCryptPresenter extends Presenter<TextCryptView> {
 
             } else if (currentMode == TextCryptView.Mode.ENCRYPT) {
 
-                view.setDecryptAreaText(str);
+                view.setDecryptBytes(bytes);
 
             } else {
 
-                view.setEncryptAreaText(str);
+                view.setEncryptBytes(bytes);
             }
         }));
     }

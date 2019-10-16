@@ -13,17 +13,6 @@ public class BasicKeyGenerator implements KeyGenerator {
     private final int blockSize = 1024 * 1024 * 10;
 
     @Override
-    public String generate(int keyLength) {
-        StringBuilder key = new StringBuilder();
-
-        for (int i = 0; i < keyLength; i++) {
-            key.append((char)(rand.nextInt(256)));
-        }
-
-        return key.toString();
-    }
-
-    @Override
     public void generateFile(long keyLength, File destinationFile) throws Exception {
 
         var out = new FileOutputStream(destinationFile);
@@ -31,16 +20,17 @@ public class BasicKeyGenerator implements KeyGenerator {
         for (long i = 0; i < keyLength; i+= blockSize) {
 
             if (keyLength - i < blockSize) {
-                out.write(generateRandomBytesBlock((int)(keyLength - i)));
+                out.write(generate((int)(keyLength - i)));
             } else {
-                out.write(generateRandomBytesBlock(blockSize));
+                out.write(generate(blockSize));
             }
         }
 
         out.close();
     }
 
-    private byte[] generateRandomBytesBlock(int n) {
+    @Override
+    public byte[] generate(int n) {
 
         byte[] block = new byte[n];
 

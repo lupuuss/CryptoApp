@@ -10,8 +10,8 @@ public class MainActivity extends Activity<MainView> {
     }
 
     @Override
-    public void onStart() throws Exception {
-        super.onStart();
+    public void onStart() {
+
         getController().onStartChild(this);
     }
 }

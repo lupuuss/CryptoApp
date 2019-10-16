@@ -8,7 +8,7 @@ import java.util.Random;
 
 public class BasicKeyGenerator implements KeyGenerator {
 
-    private Random rand = new Random();
+    private final Random rand = new Random();
     @SuppressWarnings("FieldCanBeLocal")
     private final int blockSize = 1024 * 1024 * 10;
 

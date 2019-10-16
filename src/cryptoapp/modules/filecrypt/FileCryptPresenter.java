@@ -21,9 +21,9 @@ class FileCryptPresenter extends Presenter<FileCryptView> {
     private File currentKeyFile;
     private File currentOutputDirectory;
 
-    private Encrypter encrypter;
-    private Decrypter decrypter;
-    private KeyGenerator keyGenerator;
+    private final Encrypter encrypter;
+    private final Decrypter decrypter;
+    private final KeyGenerator keyGenerator;
 
     FileCryptPresenter(Encrypter encrypter, Decrypter decrypter, KeyGenerator keyGenerator) {
         this.encrypter = encrypter;

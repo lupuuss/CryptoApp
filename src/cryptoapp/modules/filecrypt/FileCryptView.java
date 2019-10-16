@@ -2,7 +2,7 @@ package cryptoapp.modules.filecrypt;
 
 import cryptoapp.base.View;
 
-public interface FileCryptView extends View {
+interface FileCryptView extends View {
 
     void setCryptFileButtonText(String text);
 

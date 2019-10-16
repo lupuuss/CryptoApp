@@ -5,8 +5,6 @@ import cryptoapp.model.crypt.Crypt;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
-import java.nio.charset.Charset;
-
 /**
  * View associated with textcrypt.fxml
  */

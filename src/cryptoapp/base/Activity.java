@@ -27,14 +27,14 @@ public abstract class Activity<T> {
         scene = new Scene(parent);
     }
 
-    public void setOnStage(Stage primaryStage) throws Exception {
+    public void setOnStage(Stage primaryStage) {
         currentStage = primaryStage;
         primaryStage.setTitle(title);
         primaryStage.setScene(scene);
         onStart();
     }
 
-    public void onStart() throws Exception { }
+    public abstract void onStart();
 
     public String getTitle() {
         return title;

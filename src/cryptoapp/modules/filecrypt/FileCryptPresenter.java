@@ -95,7 +95,7 @@ class FileCryptPresenter extends Presenter<FileCryptView> {
                     keyStream = new FileInputStream(currentKeyFile);
                 }
 
-                var outputFile = new File(currentOutputDirectory, currentCryptFile.getName() + "_encrypted");
+                var outputFile = new File(currentOutputDirectory, createEncryptName(currentCryptFile.getName()));
 
                 encrypter.encrypt(
                         new FileInputStream(currentCryptFile),
@@ -119,10 +119,14 @@ class FileCryptPresenter extends Presenter<FileCryptView> {
                 view.setErrorMsg(exception.getMessage());
             } else {
 
-                cleanAfterCrypt();
+                cleanUiAfterCrypt();
             }
 
         }));
+    }
+
+    private String createEncryptName(String currentName) {
+        return currentName + ".encrypted";
     }
 
     void decrypt() {
@@ -143,7 +147,7 @@ class FileCryptPresenter extends Presenter<FileCryptView> {
 
             try {
 
-                var outputFile = new File(currentOutputDirectory, currentCryptFile.getName() + "_decrypted");
+                var outputFile = new File(currentOutputDirectory, createDecryptName(currentCryptFile.getName()));
 
                 decrypter.decrypt(
                         new FileInputStream(currentCryptFile),
@@ -167,12 +171,26 @@ class FileCryptPresenter extends Presenter<FileCryptView> {
                 view.setErrorMsg(exception.getMessage());
             } else {
 
-                cleanAfterCrypt();
+                cleanUiAfterCrypt();
             }
         }));
     }
 
-    private void cleanAfterCrypt() {
+    private String createDecryptName(String currentName) {
+
+        if (currentName.endsWith(".encrypted")) {
+
+            currentName = currentName.substring(0, currentName.length() - 10);
+
+        }
+
+        int lastIndex = currentName.lastIndexOf('.');
+        currentName = currentName.substring(0, lastIndex) + "_decrypted" + currentName.substring(lastIndex);
+
+        return currentName;
+    }
+
+    private void cleanUiAfterCrypt() {
         currentOutputDirectory = null;
         currentKeyFile = null;
         currentCryptFile = null;

@@ -87,9 +87,9 @@ class FileCryptPresenter extends Presenter<FileCryptView> {
 
                 if (currentKeyFile == null) {
 
-                    keyStream = new FileInputStream(
-                            keyGenerator.generateFile(currentCryptFile.length(), currentOutputDirectory)
-                    );
+                    File keyFile = new File(currentOutputDirectory, createKeyName(currentCryptFile.getName()));
+                    keyGenerator.generateFile(currentCryptFile.length(), keyFile);
+                    keyStream = new FileInputStream(keyFile);
 
                 } else {
                     keyStream = new FileInputStream(currentKeyFile);
@@ -123,6 +123,11 @@ class FileCryptPresenter extends Presenter<FileCryptView> {
             }
 
         }));
+    }
+
+    private String createKeyName(String currentName) {
+
+        return currentName + ".key";
     }
 
     private String createEncryptName(String currentName) {

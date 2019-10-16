@@ -24,10 +24,9 @@ public class BasicKeyGenerator implements KeyGenerator {
     }
 
     @Override
-    public File generateFile(long keyLength, File parent) throws Exception {
+    public void generateFile(long keyLength, File destinationFile) throws Exception {
 
-        var file = new File(parent,"generated_key");
-        var out = new FileOutputStream(file);
+        var out = new FileOutputStream(destinationFile);
 
         for (long i = 0; i < keyLength; i+= blockSize) {
 
@@ -39,8 +38,6 @@ public class BasicKeyGenerator implements KeyGenerator {
         }
 
         out.close();
-
-        return file;
     }
 
     private byte[] generateRandomBytesBlock(int n) {

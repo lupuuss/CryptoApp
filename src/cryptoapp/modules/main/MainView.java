@@ -26,7 +26,7 @@ public class MainView extends ActivityChild {
 
         try {
 
-            var fxml = new FXMLLoader(getClass().getResource("..\\textcrypt\\textcrypt.fxml"));
+            var fxml = new FXMLLoader(getClass().getResource("/cryptoapp/fxml/textcrypt.fxml"));
             var parent = fxml.<Parent>load();
             fxml.<TextCryptViewImpl>getController().onStartChild(parentActivity);
 
@@ -42,7 +42,7 @@ public class MainView extends ActivityChild {
 
         try {
 
-            var fxml = new FXMLLoader(getClass().getResource("..\\filecrypt\\filecrypt.fxml"));
+            var fxml = new FXMLLoader(getClass().getResource("/cryptoapp/fxml/filecrypt.fxml"));
             var parent = fxml.<Parent>load();
             fxml.<FileCryptViewImpl>getController().onStartChild(parentActivity);
 

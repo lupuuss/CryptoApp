@@ -6,7 +6,7 @@ import cryptoapp.modules.main.MainView;
 public class MainActivity extends Activity<MainView> {
 
     public MainActivity() throws Exception {
-        super("..\\modules\\main\\main.fxml", "OneTimePad");
+        super("/cryptoapp/fxml/main.fxml", "OneTimePad");
     }
 
     @Override

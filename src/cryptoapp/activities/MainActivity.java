@@ -12,7 +12,7 @@ public class MainActivity extends Activity<MainView> {
     @Override
     public void onStart() {
 
-        getController().onStartChild(this);
+        getView().onStartChild(this);
     }
 }
 

@@ -14,7 +14,7 @@ public abstract class Activity<T> {
     protected String title;
     protected Scene scene;
     protected Parent parent;
-    protected T controller;
+    protected T view;
 
     private Stage currentStage;
 
@@ -23,7 +23,7 @@ public abstract class Activity<T> {
         this.title = title;
         var loader = new FXMLLoader(getClass().getResource(fxml));
         parent = loader.load();
-        controller = loader.getController();
+        view = loader.getController();
         scene = new Scene(parent);
     }
 
@@ -52,8 +52,8 @@ public abstract class Activity<T> {
         return parent;
     }
 
-    public T getController() {
-        return controller;
+    public T getView() {
+        return view;
     }
 
     public Stage getCurrentStage() {

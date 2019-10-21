@@ -16,38 +16,38 @@ import java.io.File;
  */
 public class FileCryptViewImpl extends ActivityChild implements FileCryptView {
 
-    @FXML
-    private Button cryptFileChooserButton;
-
-    @FXML
-    private Button encryptionButton;
-
-    @FXML
-    private Button decryptionButton;
-
-    @FXML
-    private Button keyFileChooserButton;
-
-    @FXML
-    private Button outputFolderChooserButton;
-
-    @FXML
-    private ProgressIndicator encryptionProgressIndicator;
-
-    @FXML
-    private ProgressIndicator decryptionProgressIndicator;
-
-    @FXML
-    private Label errorMsgLabel;
+    @FXML private Button cryptFileChooserButton;
+    @FXML private Button encryptionButton;
+    @FXML private Button decryptionButton;
+    @FXML private Button keyFileChooserButton;
+    @FXML private Button outputFolderChooserButton;
+    @FXML private ProgressIndicator encryptionProgressIndicator;
+    @FXML private ProgressIndicator decryptionProgressIndicator;
+    @FXML private Label errorMsgLabel;
 
     private String defaultCryptFileChooserText;
     private String defaultKeyFileChooserText;
     private String defaultOutputDirectoryChooserText;
 
-
     private FileCryptPresenter presenter;
 
     private File lastPickedDir;
+
+    @Override
+    public void onStart() {
+
+        presenter = new FileCryptPresenter(
+                Crypt.getOneTimePadEncrypter(),
+                Crypt.getOneTimePadDecrypter(),
+                Crypt.getKeyGenerator()
+        );
+
+        presenter.inject(this);
+
+        defaultCryptFileChooserText = cryptFileChooserButton.getText();
+        defaultKeyFileChooserText = keyFileChooserButton.getText();
+        defaultOutputDirectoryChooserText = outputFolderChooserButton.getText();
+    }
 
     private File chooseFile(String windowName) {
         var fileChooser = new FileChooser();
@@ -109,22 +109,6 @@ public class FileCryptViewImpl extends ActivityChild implements FileCryptView {
     public void onDecryptionButtonClick() {
 
         presenter.decrypt();
-    }
-
-    @Override
-    public void onStart() {
-
-        presenter = new FileCryptPresenter(
-                Crypt.getOneTimePadEncrypter(),
-                Crypt.getOneTimePadDecrypter(),
-                Crypt.getKeyGenerator()
-        );
-
-        presenter.inject(this);
-
-        defaultCryptFileChooserText = cryptFileChooserButton.getText();
-        defaultKeyFileChooserText = keyFileChooserButton.getText();
-        defaultOutputDirectoryChooserText = outputFolderChooserButton.getText();
     }
 
     @Override

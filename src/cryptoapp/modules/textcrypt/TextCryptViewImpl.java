@@ -10,31 +10,37 @@ import javafx.scene.control.*;
  */
 public class TextCryptViewImpl extends ActivityChild implements TextCryptView {
 
-    @FXML
-    private TextArea encryptTextArea;
-
+    @FXML private TextArea encryptTextArea;
     private byte[] encryptBytes;
 
-    @FXML
-    private TextArea decryptTextArea;
-
+    @FXML private TextArea decryptTextArea;
     private byte[] decryptBytes;
 
-    @FXML
-    private Button cryptButton;
-
-    @FXML
-    private ProgressIndicator cryptIndicator;
-
-    @FXML
-    private TextField keyTextField;
-
+    @FXML private TextField keyTextField;
     private byte[] keyBytes;
 
-    @FXML
-    private Label errorMsgLabel;
+    @FXML private Button cryptButton;
+    @FXML private ProgressIndicator cryptIndicator;
+    @FXML private Label errorMsgLabel;
 
     private TextCryptPresenter presenter;
+
+    @Override
+    public void onStart() {
+
+        presenter = new TextCryptPresenter(
+                Crypt.getOneTimePadEncrypter(),
+                Crypt.getOneTimePadDecrypter(),
+                Crypt.getKeyGenerator()
+        );
+        presenter.inject(this);
+
+        encryptTextArea.textProperty().addListener((observableValue, oldStr, newStr) -> encryptBytes = newStr.getBytes());
+
+        decryptTextArea.textProperty().addListener((observableValue, oldStr, newStr) -> decryptBytes = newStr.getBytes());
+
+        keyTextField.textProperty().addListener((observableValue, oldStr, newStr) -> keyBytes = newStr.getBytes());
+    }
 
     @FXML
     public void onEncryptTextAreaClick() {
@@ -52,23 +58,6 @@ public class TextCryptViewImpl extends ActivityChild implements TextCryptView {
     public void onDecryptTextAreaClick() {
 
         presenter.changeCryptMode(Mode.DECRYPT);
-    }
-
-    @Override
-    public void onStart() {
-
-        presenter = new TextCryptPresenter(
-                Crypt.getOneTimePadEncrypter(),
-                Crypt.getOneTimePadDecrypter(),
-                Crypt.getKeyGenerator()
-        );
-        presenter.inject(this);
-
-        encryptTextArea.textProperty().addListener((observableValue, oldStr, newStr) -> encryptBytes = newStr.getBytes());
-
-        decryptTextArea.textProperty().addListener((observableValue, oldStr, newStr) -> decryptBytes = newStr.getBytes());
-
-        keyTextField.textProperty().addListener((observableValue, oldStr, newStr) -> keyBytes = newStr.getBytes());
     }
 
     @Override

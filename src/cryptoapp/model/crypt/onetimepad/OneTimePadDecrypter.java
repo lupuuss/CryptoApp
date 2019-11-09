@@ -5,6 +5,7 @@ import cryptoapp.base.Decrypter;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+@SuppressWarnings("DuplicatedCode")
 public class OneTimePadDecrypter implements Decrypter {
 
     @SuppressWarnings("FieldCanBeLocal")
@@ -38,11 +39,7 @@ public class OneTimePadDecrypter implements Decrypter {
 
         for (int i = 0; i < bytes.length && i < key.length; i++) {
 
-            int b = bytes[i] - key[i];
-            if (b < 0) {
-                b += 256;
-            }
-            decrypted[i] = (byte)b;
+            decrypted[i] = (byte)(bytes[i] ^ key[i]);
         }
 
         for (int i = key.length; i < bytes.length; i++) {

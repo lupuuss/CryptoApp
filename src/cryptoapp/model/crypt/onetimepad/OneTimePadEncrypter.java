@@ -5,9 +5,9 @@ import cryptoapp.base.Encrypter;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+@SuppressWarnings({ "DuplicatedCode", "ManualArrayCopy", "FieldCanBeLocal"})
 public class OneTimePadEncrypter implements Encrypter {
 
-    @SuppressWarnings("FieldCanBeLocal")
     private final int blockSize = 1024 * 1024 * 10;
 
     @Override
@@ -30,7 +30,6 @@ public class OneTimePadEncrypter implements Encrypter {
         key.close();
     }
 
-    @SuppressWarnings("ManualArrayCopy")
     @Override
     public byte[] encrypt(byte[] bytes, byte[] key) {
 
@@ -38,7 +37,7 @@ public class OneTimePadEncrypter implements Encrypter {
 
         for (int i = 0; i < bytes.length && i < key.length; i++) {
 
-            encrypted[i] = (byte)((bytes[i] + key[i]) % 256);
+            encrypted[i] = (byte)(bytes[i] ^ key[i]);
         }
 
         for (int i = key.length; i < bytes.length; i++) {

@@ -5,6 +5,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+
 /**
  * Wraps scene management. Scene root is loaded from FXML.
  */
@@ -58,5 +62,17 @@ public abstract class Activity<T> {
 
     public Stage getCurrentStage() {
         return currentStage;
+    }
+
+    public void openFileDesktop(File file) {
+
+        try {
+
+            Desktop.getDesktop().open(file);
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+        }
     }
 }

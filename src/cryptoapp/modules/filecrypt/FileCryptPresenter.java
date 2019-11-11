@@ -177,8 +177,8 @@ class FileCryptPresenter extends Presenter<FileCryptView> {
                 view.setErrorMsg(exception.getMessage());
             } else {
 
-                cleanUiAfterCrypt();
                 view.openFileDesktop(currentOutputDirectory);
+                cleanUiAfterCrypt();
             }
         }));
     }

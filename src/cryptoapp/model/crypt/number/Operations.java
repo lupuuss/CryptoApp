@@ -1,5 +1,7 @@
 package cryptoapp.model.crypt.number;
 
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
 import java.util.Arrays;
 
 public class Operations {
@@ -630,6 +632,24 @@ public class Operations {
         }
 
         return stringBuilder.toString();
+    }
+
+    public static int[] byteArrayToInt(byte[] bytes) {
+        IntBuffer intBuffer = ByteBuffer.wrap(bytes).asIntBuffer();
+
+        int[] ints= new int[intBuffer.remaining()];
+
+        intBuffer.get(ints);
+
+        return ints;
+    }
+
+    public static byte[] intArrayToByte(int[] ints) {
+        ByteBuffer byteBuffer = ByteBuffer.allocate(ints.length * 4);
+        IntBuffer intBuffer = byteBuffer.asIntBuffer();
+        intBuffer.put(ints);
+
+        return byteBuffer.array();
     }
 
     private static void appendZerosTo32bits(StringBuilder builder, String temp) {

@@ -1,5 +1,7 @@
 package cryptoapp.model.crypt.number;
 
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
 import java.util.Arrays;
 
 @SuppressWarnings("WeakerAccess")
@@ -24,6 +26,13 @@ public class BigNumber {
         this.bits = bits;
         realLength = bits.length;
         reduceZeros();
+    }
+
+    public BigNumber(byte[] bits) {
+
+        IntBuffer intBuffer = ByteBuffer.wrap(bits).asIntBuffer();
+
+        this.bits = intBuffer.array();
     }
 
     public BigNumber(int[] bits) {
@@ -136,6 +145,13 @@ public class BigNumber {
         return Operations.intArrayToBinaryString(bits, realLength, spaceInts);
     }
 
+    public byte[] toByteArray() {
+        ByteBuffer byteBuffer = ByteBuffer.allocate(bits.length * 4);
+        IntBuffer intBuffer = byteBuffer.asIntBuffer();
+        intBuffer.put(bits);
+
+        return byteBuffer.array();
+    }
 
     public String toBinaryString() {
         return toBinaryString(true);

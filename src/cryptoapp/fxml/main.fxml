@@ -4,6 +4,7 @@
 
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.control.ComboBox?>
 <GridPane fx:controller="cryptoapp.modules.main.MainView"
           xmlns:fx="http://javafx.com/fxml" alignment="center">
     <style>
@@ -11,11 +12,16 @@
         -fx-spacing: 20;
     </style>
     <rowConstraints>
+        <RowConstraints percentHeight="5.0"/>
         <RowConstraints percentHeight="10.0"/>
-        <RowConstraints percentHeight="90.0"/>
+        <RowConstraints percentHeight="85.0"/>
     </rowConstraints>
 
-    <HBox alignment="CENTER" GridPane.rowIndex="0">
+    <VBox GridPane.rowIndex="0" alignment="CENTER_RIGHT">
+        <ComboBox  fx:id="comboBox" />
+    </VBox>
+
+    <HBox alignment="CENTER" GridPane.rowIndex="1">
         <ToggleButton text="File" fx:id="fileToggle">
             <style>
                 -fx-font-size: 15;
@@ -33,6 +39,5 @@
         </ToggleButton>
     </HBox>
 
-
-    <VBox fx:id="currentParentContainer" alignment="CENTER" GridPane.rowIndex="1"/>
+    <VBox fx:id="currentParentContainer" alignment="CENTER" GridPane.rowIndex="2"/>
 </GridPane>

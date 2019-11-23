@@ -1,6 +1,7 @@
 package cryptoapp.modules.textcrypt;
 
 import cryptoapp.base.ActivityChild;
+import cryptoapp.base.Cryptosystem;
 import cryptoapp.model.crypt.Crypt;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -29,9 +30,7 @@ public class TextCryptViewImpl extends ActivityChild implements TextCryptView {
     public void onStart() {
 
         presenter = new TextCryptPresenter(
-                Crypt.getOneTimePadEncrypter(),
-                Crypt.getOneTimePadDecrypter(),
-                Crypt.getKeyGenerator()
+                Crypt.getOneTimePad()
         );
         presenter.inject(this);
 
@@ -40,6 +39,11 @@ public class TextCryptViewImpl extends ActivityChild implements TextCryptView {
         decryptTextArea.textProperty().addListener((observableValue, oldStr, newStr) -> decryptBytes = newStr.getBytes());
 
         keyTextField.textProperty().addListener((observableValue, oldStr, newStr) -> keyBytes = newStr.getBytes());
+    }
+
+    public void changeCryptosystem(Cryptosystem cryptosystem) {
+
+        presenter.changeCryptosystem(cryptosystem);
     }
 
     @FXML
@@ -125,5 +129,10 @@ public class TextCryptViewImpl extends ActivityChild implements TextCryptView {
     public void setErrorMsg(String message) {
 
         errorMsgLabel.setText(message);
+    }
+
+    @Override
+    public void setKeyFieldAvailability(boolean b) {
+        keyTextField.setDisable(!b);
     }
 }

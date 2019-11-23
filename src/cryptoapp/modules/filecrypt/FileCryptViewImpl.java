@@ -1,6 +1,7 @@
 package cryptoapp.modules.filecrypt;
 
 import cryptoapp.base.ActivityChild;
+import cryptoapp.base.Cryptosystem;
 import cryptoapp.model.crypt.Crypt;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -37,9 +38,7 @@ public class FileCryptViewImpl extends ActivityChild implements FileCryptView {
     public void onStart() {
 
         presenter = new FileCryptPresenter(
-                Crypt.getOneTimePadEncrypter(),
-                Crypt.getOneTimePadDecrypter(),
-                Crypt.getKeyGenerator()
+                Crypt.getOneTimePad()
         );
 
         presenter.inject(this);
@@ -47,6 +46,10 @@ public class FileCryptViewImpl extends ActivityChild implements FileCryptView {
         defaultCryptFileChooserText = cryptFileChooserButton.getText();
         defaultKeyFileChooserText = keyFileChooserButton.getText();
         defaultOutputDirectoryChooserText = outputFolderChooserButton.getText();
+    }
+
+    public void changeCryptosystem(Cryptosystem cryptosystem) {
+        presenter.changeCryptosystem(cryptosystem);
     }
 
     private File chooseFile(String windowName) {

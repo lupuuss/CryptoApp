@@ -1,26 +1,26 @@
 package cryptoapp.model.crypt;
 
-import cryptoapp.base.Decrypter;
-import cryptoapp.base.Encrypter;
-import cryptoapp.base.KeyGenerator;
-import cryptoapp.model.crypt.onetimepad.OneTimePadDecrypter;
-import cryptoapp.model.crypt.onetimepad.OneTimePadEncrypter;
+import cryptoapp.base.Cryptosystem;
+import cryptoapp.model.crypt.number.PrimeNumberGenerator;
+import cryptoapp.model.crypt.onetimepad.OneTimePad;
+import cryptoapp.model.crypt.rabin.RabinCryptosystem;
 
 
 public class Crypt {
 
-    public static Decrypter getOneTimePadDecrypter() {
-
-        return new OneTimePadDecrypter();
+    public enum System {
+        OneTimePad, Rabin
     }
 
-    public static Encrypter getOneTimePadEncrypter() {
+    private static PrimeNumberGenerator primeNumberGenerator = new PrimeNumberGenerator();
+    private static OneTimePad oneTimePad = new OneTimePad();
+    private static RabinCryptosystem rabin = new RabinCryptosystem(primeNumberGenerator);
 
-        return new OneTimePadEncrypter();
+    public static Cryptosystem getOneTimePad() {
+        return oneTimePad;
     }
 
-    public static KeyGenerator getKeyGenerator() {
-
-        return new BasicKeyGenerator();
+    public static Cryptosystem getRabinCryptosystem() {
+        return rabin;
     }
 }

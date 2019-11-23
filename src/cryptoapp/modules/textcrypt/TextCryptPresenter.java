@@ -1,9 +1,6 @@
 package cryptoapp.modules.textcrypt;
 
-import cryptoapp.base.Decrypter;
-import cryptoapp.base.Encrypter;
-import cryptoapp.base.KeyGenerator;
-import cryptoapp.base.Presenter;
+import cryptoapp.base.*;
 import cryptoapp.java.FxBiConsumer;
 
 import java.util.concurrent.CompletableFuture;
@@ -13,24 +10,36 @@ import java.util.concurrent.CompletionException;
 class TextCryptPresenter extends Presenter<TextCryptView> {
 
     private TextCryptView.Mode currentMode = TextCryptView.Mode.ENCRYPT;
-    private final Encrypter encrypter;
-    private final Decrypter decrypter;
-    private final KeyGenerator keyGenerator;
+    private Encrypter encrypter;
+    private Decrypter decrypter;
+    private KeyGenerator keyGenerator;
+    private Cryptosystem cryptosystem;
 
     private byte[] key;
 
     private final String noDataErrorMsg = "You have to enter message to encryption/decryption!";
 
-    TextCryptPresenter(Encrypter encrypter, Decrypter decrypter, KeyGenerator keyGenerator) {
-        this.encrypter = encrypter;
-        this.decrypter = decrypter;
-        this.keyGenerator = keyGenerator;
+    TextCryptPresenter(Cryptosystem cryptosystem) {
+        changeCryptosystem(cryptosystem);
+    }
+
+    void changeCryptosystem(Cryptosystem cryptosystem) {
+
+        this.encrypter = cryptosystem.getEncrypter();
+        this.decrypter = cryptosystem.getDecrypter();
+        this.keyGenerator = cryptosystem.getKeyGenerator();
+        this.cryptosystem = cryptosystem;
+
+        if (currentMode == TextCryptView.Mode.ENCRYPT && !cryptosystem.isNoGeneratedKeyAllowed()) {
+            view.setKeyFieldAvailability(false);
+        }
     }
 
     void changeCryptMode(TextCryptView.Mode mode) {
 
         view.setCryptButtonMode(mode);
         currentMode = mode;
+        view.setKeyFieldAvailability(cryptosystem.isNoGeneratedKeyAllowed() || mode != TextCryptView.Mode.ENCRYPT);
     }
 
     void crypt() {
@@ -56,9 +65,10 @@ class TextCryptPresenter extends Presenter<TextCryptView> {
 
                 throw new NoKeyForDecryptionException();
 
-            } else if (currentMode == TextCryptView.Mode.ENCRYPT && (key == null || key.length == 0)) {
+            } else if (currentMode == TextCryptView.Mode.ENCRYPT
+                    && (!cryptosystem.isNoGeneratedKeyAllowed() || key == null || key.length == 0)) {
 
-                key = keyGenerator.generate(data.length);
+                key = keyGenerator.generate(data, 16);
             }
 
             if (currentMode == TextCryptView.Mode.ENCRYPT) {

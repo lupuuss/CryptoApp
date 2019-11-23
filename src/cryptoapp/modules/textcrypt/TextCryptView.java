@@ -10,6 +10,8 @@ public interface TextCryptView extends View {
 
     void setCryptProgressIndicatorVisibility(boolean isVisible);
 
+    void setKeyFieldAvailability(boolean b);
+
     void setCryptButtonMode(Mode mode);
 
     void setEncryptBytes(byte[] bytes);

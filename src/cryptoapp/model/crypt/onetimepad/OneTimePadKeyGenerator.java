@@ -1,4 +1,4 @@
-package cryptoapp.model.crypt;
+package cryptoapp.model.crypt.onetimepad;
 
 import cryptoapp.base.KeyGenerator;
 
@@ -6,23 +6,25 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Random;
 
-public class BasicKeyGenerator implements KeyGenerator {
+public class OneTimePadKeyGenerator implements KeyGenerator {
 
     private final Random rand = new Random();
     @SuppressWarnings("FieldCanBeLocal")
     private final int blockSize = 1024 * 1024 * 10;
 
     @Override
-    public void generateFile(long keyLength, File destinationFile) throws Exception {
+    public void generateFile(long constKeyLength, File message, File destinationFile) throws Exception {
 
         var out = new FileOutputStream(destinationFile);
+
+        long keyLength = message.length();
 
         for (long i = 0; i < keyLength; i+= blockSize) {
 
             if (keyLength - i < blockSize) {
-                out.write(generate((int)(keyLength - i)));
+                out.write(generate(null, (int)(keyLength - i)));
             } else {
-                out.write(generate(blockSize));
+                out.write(generate(null, blockSize));
             }
         }
 
@@ -30,11 +32,13 @@ public class BasicKeyGenerator implements KeyGenerator {
     }
 
     @Override
-    public byte[] generate(int n) {
+    public byte[] generate(byte[] message, int constKeyLength) {
 
-        byte[] block = new byte[n];
+        int keyLength = message == null ? constKeyLength : message.length;
 
-        for (int i = 0; i < n; i++) {
+        byte[] block = new byte[keyLength];
+
+        for (int i = 0; i < keyLength; i++) {
             block[i] = (byte)rand.nextInt(256);
         }
 

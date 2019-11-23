@@ -1,10 +1,8 @@
 package cryptoapp.modules.filecrypt;
 
-import cryptoapp.base.Decrypter;
-import cryptoapp.base.Encrypter;
-import cryptoapp.base.KeyGenerator;
-import cryptoapp.base.Presenter;
+import cryptoapp.base.*;
 import cryptoapp.java.FxBiConsumer;
+import cryptoapp.model.crypt.Crypt;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,14 +19,20 @@ class FileCryptPresenter extends Presenter<FileCryptView> {
     private File currentKeyFile;
     private File currentOutputDirectory;
 
-    private final Encrypter encrypter;
-    private final Decrypter decrypter;
-    private final KeyGenerator keyGenerator;
+    private Encrypter encrypter;
+    private Decrypter decrypter;
+    private KeyGenerator keyGenerator;
+    private Cryptosystem cryptosystem;
 
-    FileCryptPresenter(Encrypter encrypter, Decrypter decrypter, KeyGenerator keyGenerator) {
-        this.encrypter = encrypter;
-        this.decrypter = decrypter;
-        this.keyGenerator = keyGenerator;
+    FileCryptPresenter(Cryptosystem cryptosystem) {
+        changeCryptosystem(cryptosystem);
+    }
+
+    void changeCryptosystem(Cryptosystem cryptosystem) {
+        this.encrypter = cryptosystem.getEncrypter();
+        this.decrypter = cryptosystem.getDecrypter();
+        this.keyGenerator = cryptosystem.getKeyGenerator();
+        this.cryptosystem = cryptosystem;
     }
 
     void setCryptFile(File file) {
@@ -85,13 +89,14 @@ class FileCryptPresenter extends Presenter<FileCryptView> {
 
                 InputStream keyStream;
 
-                if (currentKeyFile == null) {
+                if (currentKeyFile == null || !cryptosystem.isNoGeneratedKeyAllowed()) {
 
                     File keyFile = new File(currentOutputDirectory, createKeyName(currentCryptFile.getName()));
-                    keyGenerator.generateFile(currentCryptFile.length(), keyFile);
+                    keyGenerator.generateFile(0, currentCryptFile, keyFile);
                     keyStream = new FileInputStream(keyFile);
 
                 } else {
+
                     keyStream = new FileInputStream(currentKeyFile);
                 }
 

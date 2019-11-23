@@ -98,6 +98,8 @@ public class PrimeNumberGenerator {
             result[i] = rand.nextInt();
         }
 
+        result[n - 1] |= 0x80000000;
+
         // makes int odd
         result[0] |= 1;
 

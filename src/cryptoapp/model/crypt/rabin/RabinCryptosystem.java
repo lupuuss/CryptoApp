@@ -6,12 +6,17 @@ import cryptoapp.base.Encrypter;
 import cryptoapp.base.KeyGenerator;
 import cryptoapp.model.crypt.number.PrimeNumberGenerator;
 
+import java.util.List;
+
 public class RabinCryptosystem implements Cryptosystem {
 
-    private final byte[] header = {'H', 'E', 'A', 'D' };
+    final static int HEADER_PADDING_SIZE = 8;
+    final static int PADDING_INT_SIZE = 4;
 
-    private RabinEncrypter encrypter = new RabinEncrypter(header);
-    private RabinDecrypter decrypter = new RabinDecrypter(header);
+    private final byte[] HEADER = { 0, 'R', 'B', 'N' }; // ends with 0 to m < n;
+
+    private RabinEncrypter encrypter = new RabinEncrypter(HEADER);
+    private RabinDecrypter decrypter = new RabinDecrypter(HEADER);
     private RabinKeyGenerator rabinKeyGenerator;
 
     public RabinCryptosystem(PrimeNumberGenerator primeNumberGenerator) {
@@ -47,4 +52,23 @@ public class RabinCryptosystem implements Cryptosystem {
     public KeyGenerator getKeyGenerator() {
         return rabinKeyGenerator;
     }
+
+    static byte[] concatParts(List<byte[]> decryptedParts) {
+
+        int size = 0;
+        for(byte[] part : decryptedParts) {
+            size += part.length;
+        }
+
+        byte[] decrypted = new byte[size];
+
+        int i = 0;
+        for (byte[] part : decryptedParts) {
+            System.arraycopy(part, 0, decrypted, i, part.length);
+            i+= part.length;
+        }
+
+        return decrypted;
+    }
+
 }

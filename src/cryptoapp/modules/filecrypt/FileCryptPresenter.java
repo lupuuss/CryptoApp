@@ -92,7 +92,7 @@ class FileCryptPresenter extends Presenter<FileCryptView> {
                 if (currentKeyFile == null || !cryptosystem.isNoGeneratedKeyAllowed()) {
 
                     File keyFile = new File(currentOutputDirectory, createKeyName(currentCryptFile.getName()));
-                    keyGenerator.generateFile(0, currentCryptFile, keyFile);
+                    keyGenerator.generateFile(16, currentCryptFile, keyFile);
                     keyStream = new FileInputStream(keyFile);
 
                 } else {

@@ -1,31 +1,45 @@
 package cryptoapp.model.crypt.rabin;
 
 import cryptoapp.base.Encrypter;
+import cryptoapp.model.crypt.Crypt;
 import cryptoapp.model.crypt.number.BigNumber;
 import cryptoapp.model.crypt.number.Operations;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 public class RabinEncrypter implements Encrypter {
 
     private final byte[] headerConst;
+    private final Random random = new Random();
 
     public RabinEncrypter(byte[] headerConst) {
         this.headerConst = headerConst;
     }
 
-    private byte[] createHeader(int byteLength) {
+    private byte[] createPadding(int bytesLength) {
 
-        int i = byteLength;
-        byte[] header = new byte[byteLength];
+        byte[] padding = new byte[bytesLength + RabinCryptosystem.HEADER_PADDING_SIZE];
 
-        while (--i >= 0) {
-            header[i] = headerConst[i % 4];
+        for (int i = 0; i < bytesLength; i++) {
+            padding[i] = (byte)random.nextInt();
         }
 
-        return header;
+        int[] singleItemArray = new int[1];
+        singleItemArray[0] = bytesLength;
+        byte[] paddingSize = Operations.intArrayToByte(singleItemArray);
+
+        System.arraycopy(paddingSize, 0, padding, bytesLength, RabinCryptosystem.PADDING_INT_SIZE);
+
+        System.arraycopy(headerConst, 0, padding,
+                bytesLength + RabinCryptosystem.PADDING_INT_SIZE, headerConst.length);
+
+
+        return padding;
     }
 
     @Override
@@ -36,35 +50,70 @@ public class RabinEncrypter implements Encrypter {
         int[] qArray = Arrays.copyOfRange(keyPair, keyPair.length / 2, keyPair.length);
 
         BigNumber n = new BigNumber(pArray).times(new BigNumber(qArray));
-        byte[] encrypted = new byte[bytes.length + 8];
 
-        rawEncrypt(bytes, n, encrypted, 0);
+        int diff = key.length - bytes.length - RabinCryptosystem.HEADER_PADDING_SIZE;
 
-        return encrypted;
+        if (diff >= 0) {
+
+            return rawEncrypt(bytes, n, diff);
+        } else {
+
+            int partSize = key.length - RabinCryptosystem.HEADER_PADDING_SIZE;
+
+            List<byte[]> encryptedParts = new ArrayList<>();
+
+            byte[] temp;
+
+            for (int i = 0; i < bytes.length / partSize; i++) {
+                temp = Arrays.copyOfRange(bytes, i * partSize, (i + 1) * partSize);
+                encryptedParts.add(rawEncrypt(temp, n, 0));
+            }
+
+            int rest = bytes.length % partSize;
+            temp = Arrays.copyOfRange(bytes, partSize * (bytes.length / partSize), bytes.length);
+
+            encryptedParts.add(rawEncrypt(temp, n, key.length - RabinCryptosystem.HEADER_PADDING_SIZE - rest));
+
+            return RabinCryptosystem.concatParts(encryptedParts);
+
+        }
     }
 
-    private void rawEncrypt(byte[] bytes, BigNumber n, byte[] encrypted, int index) {
-        if (bytes.length - 8 < n.getIntegersCount()) {
-            throw new IllegalStateException("m > n");
-        }
 
-        byte[] header = createHeader(8);
+    private byte[] rawEncrypt(byte[] bytes, BigNumber n, int padding) {
 
-        int[] messageArray = new int[(bytes.length + 8) / 4];
+        byte[] paddingBytes = createPadding(padding);
 
-        System.arraycopy(Operations.byteArrayToInt(header), 0, messageArray, 0, header.length / 4);
-        System.arraycopy(Operations.byteArrayToInt(bytes), 0, messageArray, header.length / 4, bytes.length / 4);
+        byte[] messageBytes = new byte[bytes.length + padding + RabinCryptosystem.HEADER_PADDING_SIZE];
 
-        BigNumber m = new BigNumber(messageArray);
-        BigNumber m1 = new BigNumber(messageArray);
+        System.arraycopy(bytes, 0, messageBytes, 0, bytes.length);
+        System.arraycopy(paddingBytes, 0, messageBytes,
+                bytes.length, padding + RabinCryptosystem.HEADER_PADDING_SIZE);
 
-        BigNumber c = m.times(m1).divide(n).getRemainder();
+        int[] messageInts = Operations.byteArrayToInt(messageBytes);
 
-        System.arraycopy(c.toByteArray(), 0, encrypted, index, c.getIntegersCount() * 4);
+        BigNumber m = new BigNumber(messageInts);
+        BigNumber c = m.times(m).divide(n).getRemainder();
+
+        return c.toByteArray();
     }
 
     @Override
     public void encrypt(InputStream in, OutputStream out, InputStream key) throws Exception {
 
+        byte[] inputBlock;
+        byte[] keyBytes = key.readAllBytes();
+
+        do {
+
+            inputBlock = in.readNBytes(Crypt.BLOCK_SIZE);
+
+            out.write(encrypt(inputBlock, keyBytes));
+
+        } while (inputBlock.length == Crypt.BLOCK_SIZE);
+
+        in.close();
+        out.close();
+        key.close();
     }
 }

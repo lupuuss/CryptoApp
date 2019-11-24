@@ -22,6 +22,7 @@ public class BigNumber {
      */
     public BigNumber(int[] bits, int sign) {
         this.bits = bits;
+        this.sign = sign;
         realLength = bits.length;
         reduceZeros();
     }
@@ -36,7 +37,11 @@ public class BigNumber {
     }
 
     public BigNumber(int val) {
+        this(val, 1);
+    }
 
+    public BigNumber(int val, int sign) {
+        this.sign = sign;
         this.bits = new int[1];
         bits[0] = val;
 
@@ -138,7 +143,7 @@ public class BigNumber {
 
     public String toBinaryString(boolean spaceInts) {
 
-        return Operations.intArrayToBinaryString(bits, realLength, spaceInts);
+        return ((sign == -1) ? "-" : "") + Operations.intArrayToBinaryString(bits, realLength, spaceInts);
     }
 
     public byte[] toByteArray() {
@@ -150,10 +155,18 @@ public class BigNumber {
     }
 
     public int getIntegersCount() {
-        return bits.length;
+        return realLength;
+    }
+
+    public int getBytesCount() {
+        return  getIntegersCount() * 4;
     }
 
     public int mod2() {
         return bits[0] & 1;
+    }
+
+    public int getSign() {
+        return sign;
     }
 }

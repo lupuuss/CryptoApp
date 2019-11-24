@@ -2,7 +2,6 @@ package cryptoapp.model.crypt.rabin;
 
 import cryptoapp.base.KeyGenerator;
 import cryptoapp.model.crypt.number.BigNumber;
-import cryptoapp.model.crypt.number.Operations;
 import cryptoapp.model.crypt.number.PrimeNumberGenerator;
 
 import java.io.File;

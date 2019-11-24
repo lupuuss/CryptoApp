@@ -1,5 +1,6 @@
 package cryptoapp.model.crypt.number;
 
+import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.Arrays;
@@ -38,6 +39,14 @@ public class Operations {
             return b.subtract(a.negate());
         }
 
+        if (a.isZero()) {
+            return b;
+        }
+
+        if (b.isZero()) {
+            return a;
+        }
+
         BigNumber bigger = a.realLength > b.realLength ? a : b;
         BigNumber smaller = a.realLength > b.realLength ? b : a;
         int[] result = new int[bigger.realLength + 1];
@@ -73,11 +82,11 @@ public class Operations {
         }
 
         if (a.isOne()) {
-            return b;
+            return new BigNumber(b.bits, a.sign * b.sign);
         }
 
         if (b.isOne()) {
-            return a;
+            return new BigNumber(a.bits, a.sign * b.sign);
         }
 
         int[] result = new int[a.realLength + b.realLength];
@@ -99,8 +108,17 @@ public class Operations {
     }
 
     public static BigNumber subtract(BigNumber a, BigNumber b) {
+
         if (a.sign != b.sign) {
-            return  a.add(b.negate());
+            return a.add(b.negate());
+        }
+
+        if (a.isZero()) {
+            return new BigNumber(b.bits, b.sign * (-1));
+        }
+
+        if (b.isZero()) {
+            return a;
         }
 
         var comparison = Comparison.compareNumbers(a, b);
@@ -142,7 +160,7 @@ public class Operations {
         if(comparison.isLeftBigger()) {
             return new BigNumber(result, a.sign);
         } else {
-            return new BigNumber(result, -a.sign);
+            return new BigNumber(result, -1 * a.sign);
         }
     }
 
@@ -188,10 +206,6 @@ public class Operations {
             return new DivisionResult(BigNumber.ZERO, BigNumber.ZERO);
         }
 
-        if (a.sign == -1 || b.sign == -1) {
-            throw new IllegalArgumentException("Only non negative division is available!");
-        }
-
         if (b.isOne()) {
             return new DivisionResult(a, BigNumber.ZERO);
         }
@@ -203,7 +217,7 @@ public class Operations {
 
         if (comparison.areEqual()) {
 
-            return new DivisionResult(BigNumber.ONE, BigNumber.ZERO);
+            return new DivisionResult(new BigNumber(1, a.sign * b.sign), BigNumber.ZERO);
         }
 
         if (!comparison.isLeftBigger()) {
@@ -211,12 +225,9 @@ public class Operations {
             return new DivisionResult(BigNumber.ZERO, a);
         }
 
-        if (a.getIntegersCount() == 1 && b.getIntegersCount() == 1) {
+        if (b.getIntegersCount() == 1) {
 
-            return new DivisionResult(new BigNumber((int)(u_long(a.bits[0]) / u_long(b.bits[0]))), new BigNumber((int)(u_long(a.bits[0]) % u_long(b.bits[0]))));
-        } else if (b.getIntegersCount() == 1) {
-
-            return divisionByUnsignedInt(a.bits, a.realLength, b.bits[0]);
+            return divisionByUnsignedInt(a.bits, a.realLength, b.bits[0], a.sign, b.sign);
         }
 
         int[] dividend;
@@ -245,7 +256,7 @@ public class Operations {
             quotient[i - 1] = dividend[i + divisor.length - 1];
         }
 
-        return new DivisionResult(new BigNumber(quotient), new BigNumber(divisor));
+        return new DivisionResult(new BigNumber(quotient, a.sign * b.sign), new BigNumber(divisor));
     }
 
     private static int normalizeValue(int[] norm, int size) {
@@ -267,96 +278,6 @@ public class Operations {
         } while (res == 0);
 
         return i;
-    }
-
-    public static KnuthResult division(int[] dividend, int m, int[] divisor, int n) {
-
-        long guess = 0;
-        int[] quotient = new int[m - n + 1];
-        int[] remainder = new int[n + 1];
-
-        System.arraycopy(dividend, m - n, remainder, 0, n);
-
-        System.out.println(intArrayToBinaryString(remainder, remainder.length, true));
-
-        for (int i = m - n; i >= 0; i--) {
-
-            int compare;
-
-            System.out.println("1] [" + i + "]" + intArrayToBinaryString(remainder, remainder.length, true));
-            System.out.println("1] [" + i + "]" + intArrayToBinaryString(divisor, divisor.length, true));
-
-            if (remainder[n] == 0) {
-                compare = Comparison.compareBitsRange(remainder, 0, divisor, 0, n);
-            } else {
-
-                compare = 1;
-                System.out.println("Compare default 1");
-            }
-
-            if (compare < 0 && i == 0) {
-                break;
-            } else if (compare == 0) {
-                quotient[i] = 1;
-                continue;
-
-            }  else if (compare < 0) {
-                quotient[i - 1] = 0;
-                shiftOneIntLeft(remainder, remainder.length);
-                remainder[0] = dividend[i - 1];
-                continue;
-            }
-
-            guess = Long.divideUnsigned((u_long(remainder[n]) << 32) + u_long(remainder[n - 1]), divisor[n - 1]);
-
-            System.out.println(guess);
-            quotient[i] = 0;
-
-            do {
-
-                long carry = 0;
-
-                System.out.println("2R] [" + i + "]" + intArrayToBinaryString(remainder, remainder.length, true));
-                System.out.println("2D] [" + i + "]" + intArrayToBinaryString(divisor, divisor.length, true));
-
-                for (int j = 0; j < n; j++) {
-
-                    carry += u_long(remainder[j]) - guess * u_long(divisor[j]);
-                    remainder[j] = (int) carry;
-
-                    carry >>>= 32;
-
-                    if (carry != 0) {
-                        carry = -1;
-                    }
-                    System.out.println("2R] [" + j + "]" + intArrayToBinaryString(remainder, remainder.length, true));
-                }
-
-                System.out.println(carry);
-                System.out.println(remainder[n]);
-                remainder[n] += carry;
-                System.out.println("2] [" + i + "]" + intArrayToBinaryString(remainder, remainder.length, true));
-
-                quotient[i] += guess;
-
-                guess = 1;
-
-            } while (remainder[n] != 0 || Comparison.compareBitsRange(remainder, 0, divisor, 0, n) >= 0);
-
-
-            if (i != 0) {
-                shiftOneIntLeft(remainder, remainder.length);
-                remainder[0] = dividend[i - 1];
-
-            } else {
-                break;
-            }
-            System.out.println("3] [" + i + "]" + intArrayToBinaryString(remainder, remainder.length, true));
-            System.out.println("3Q] [" + i + "]" + intArrayToBinaryString(quotient, quotient.length, true));
-
-        }
-
-        return new KnuthResult(quotient, remainder);
     }
 
     public static long divideUnsignedLongByInt(long N, int D) {
@@ -502,7 +423,7 @@ public class Operations {
         }
     }
 
-    public static DivisionResult divisionByUnsignedInt (int[] dividend, int size, int divisor) {
+    public static DivisionResult divisionByUnsignedInt (int[] dividend, int size, int divisor, int dividendSign, int divisorSign) {
 
         int[] quotient = new int[size];
 
@@ -514,7 +435,7 @@ public class Operations {
             k = Long.remainderUnsigned(k * base + u_long(dividend[j]), u_long(divisor));
         }
 
-        return new DivisionResult(new BigNumber(quotient), new BigNumber((int) k));
+        return new DivisionResult(new BigNumber(quotient, dividendSign * divisorSign), new BigNumber((int) k));
     }
 
     private static KnuthResult knuthDivision(int[] dividend,int m, int[] divisor, int n) {
@@ -619,6 +540,18 @@ public class Operations {
         return result;
     }
 
+    public static EuclideanResult extendedEuclidean(final BigNumber a, final BigNumber b) {
+        if (b.isZero()) {
+            return new EuclideanResult(a, BigNumber.ONE, BigNumber.ZERO);
+        } else {
+            final EuclideanResult extension = extendedEuclidean(b, a.divide(b).getRemainder());
+            return new EuclideanResult(
+                    extension.getGcd(),
+                    extension.getYq(),
+                    extension.getYp().subtract(a.divide(b).getQuotient().times(extension.getYq())));
+        }
+    }
+
     public static String intArrayToBinaryString(int[] bits, int size, boolean spaceInts) {
         if (bits.length == 0) return "NULL_NUMBER";
 
@@ -635,10 +568,9 @@ public class Operations {
     }
 
     public static int[] byteArrayToInt(byte[] bytes) {
+
         IntBuffer intBuffer = ByteBuffer.wrap(bytes).asIntBuffer();
-
         int[] ints= new int[intBuffer.remaining()];
-
         intBuffer.get(ints);
 
         return ints;
@@ -660,5 +592,4 @@ public class Operations {
 
         builder.append(temp);
     }
-
 }

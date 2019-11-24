@@ -1,15 +1,13 @@
 package cryptoapp.model.crypt.onetimepad;
 
 import cryptoapp.base.Decrypter;
+import cryptoapp.model.crypt.Crypt;
 
 import java.io.InputStream;
 import java.io.OutputStream;
 
 @SuppressWarnings("DuplicatedCode")
 public class OneTimePadDecrypter implements Decrypter {
-
-    @SuppressWarnings("FieldCanBeLocal")
-    private final int blockSize = 1024 * 1024 * 10;
 
     @Override
     public void decrypt(InputStream in, OutputStream out, InputStream key) throws Exception {
@@ -19,12 +17,12 @@ public class OneTimePadDecrypter implements Decrypter {
 
         do {
 
-            inputBlock = in.readNBytes(blockSize);
-            keyBlock = key.readNBytes(blockSize);
+            inputBlock = in.readNBytes(Crypt.BLOCK_SIZE);
+            keyBlock = key.readNBytes(Crypt.BLOCK_SIZE);
 
             out.write(decrypt(inputBlock, keyBlock));
 
-        } while (inputBlock.length == blockSize);
+        } while (inputBlock.length == Crypt.BLOCK_SIZE);
 
         in.close();
         out.close();

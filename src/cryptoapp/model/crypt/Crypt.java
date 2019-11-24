@@ -12,6 +12,8 @@ public class Crypt {
         OneTimePad, Rabin
     }
 
+    public static int BLOCK_SIZE = 1024 * 1024 * 10;
+
     private static PrimeNumberGenerator primeNumberGenerator = new PrimeNumberGenerator();
     private static OneTimePad oneTimePad = new OneTimePad();
     private static RabinCryptosystem rabin = new RabinCryptosystem(primeNumberGenerator);

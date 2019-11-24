@@ -26,6 +26,10 @@ public interface TextCryptView extends View {
 
     byte[] getKeyBytes();
 
+    String getKeyLengthString();
+
+    void setKeyLengthFieldAvailability(boolean isKeyLengthAvailable);
+
     void setUiAvailability(boolean isUiAvailable);
 
     void setErrorMsg(String message);

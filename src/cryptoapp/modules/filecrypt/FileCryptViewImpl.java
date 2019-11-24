@@ -4,12 +4,9 @@ import cryptoapp.base.ActivityChild;
 import cryptoapp.base.Cryptosystem;
 import cryptoapp.model.crypt.Crypt;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.*;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
-
 import java.io.File;
 
 /**
@@ -17,6 +14,7 @@ import java.io.File;
  */
 public class FileCryptViewImpl extends ActivityChild implements FileCryptView {
 
+    @FXML public TextField keyLength;
     @FXML private Button cryptFileChooserButton;
     @FXML private Button encryptionButton;
     @FXML private Button decryptionButton;
@@ -33,6 +31,8 @@ public class FileCryptViewImpl extends ActivityChild implements FileCryptView {
     private FileCryptPresenter presenter;
 
     private File lastPickedDir;
+    private String defaultKeyLengthMessage;
+    private String keyLengthUnavailable = "Key length cannot be set...";
 
     @Override
     public void onStart() {
@@ -46,6 +46,7 @@ public class FileCryptViewImpl extends ActivityChild implements FileCryptView {
         defaultCryptFileChooserText = cryptFileChooserButton.getText();
         defaultKeyFileChooserText = keyFileChooserButton.getText();
         defaultOutputDirectoryChooserText = outputFolderChooserButton.getText();
+        defaultKeyLengthMessage = keyLength.getPromptText();
     }
 
     public void changeCryptosystem(Cryptosystem cryptosystem) {
@@ -148,6 +149,7 @@ public class FileCryptViewImpl extends ActivityChild implements FileCryptView {
         outputFolderChooserButton.setDisable(!isAvailable);
         encryptionButton.setDisable(!isAvailable);
         decryptionButton.setDisable(!isAvailable);
+        keyLength.setDisable(!isAvailable);
     }
 
     @Override
@@ -169,5 +171,25 @@ public class FileCryptViewImpl extends ActivityChild implements FileCryptView {
     @Override
     public void setOutputDirectoryButtonTextDefault() {
         outputFolderChooserButton.setText(defaultOutputDirectoryChooserText);
+    }
+
+    @Override
+    public void setKeyLengthAvailability(boolean isKeyLengthAvailable) {
+        if (isKeyLengthAvailable) {
+            keyLength.setPromptText(defaultKeyLengthMessage);
+        } else {
+            keyLength.setPromptText(keyLengthUnavailable);
+        }
+        keyLength.setDisable(!isKeyLengthAvailable);
+    }
+
+    @Override
+    public String getKeyLength() {
+        return keyLength.getText();
+    }
+
+    @Override
+    public void setKeyLength(String keyLength) {
+        this.keyLength.setText(keyLength);
     }
 }

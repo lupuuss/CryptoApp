@@ -27,6 +27,11 @@ public class OneTimePad implements Cryptosystem {
     }
 
     @Override
+    public int getDefaultKeyLength() {
+        return 0;
+    }
+
+    @Override
     public Encrypter getEncrypter() {
         return encrypter;
     }

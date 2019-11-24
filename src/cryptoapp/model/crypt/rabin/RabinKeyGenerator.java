@@ -7,6 +7,7 @@ import cryptoapp.model.crypt.number.PrimeNumberGenerator;
 import java.io.File;
 import java.io.FileOutputStream;
 
+@SuppressWarnings("WeakerAccess")
 public class RabinKeyGenerator implements KeyGenerator {
 
     private PrimeNumberGenerator primeNumberGenerator;
@@ -17,6 +18,8 @@ public class RabinKeyGenerator implements KeyGenerator {
 
     @Override
     public byte[] generate(byte[] message, int constKeyLength) {
+
+        constKeyLength /= 32;
 
         BigNumber p = primeNumberGenerator.generatePrime(
                 constKeyLength / 2,

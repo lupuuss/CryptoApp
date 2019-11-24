@@ -2,8 +2,6 @@ package cryptoapp.modules.filecrypt;
 
 import cryptoapp.base.*;
 import cryptoapp.java.FxBiConsumer;
-import cryptoapp.model.crypt.Crypt;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -25,6 +23,13 @@ class FileCryptPresenter extends Presenter<FileCryptView> {
     private Cryptosystem cryptosystem;
 
     FileCryptPresenter(Cryptosystem cryptosystem) {
+        this.cryptosystem = cryptosystem;
+    }
+
+    @Override
+    public void inject(FileCryptView view) {
+        super.inject(view);
+
         changeCryptosystem(cryptosystem);
     }
 
@@ -33,6 +38,14 @@ class FileCryptPresenter extends Presenter<FileCryptView> {
         this.decrypter = cryptosystem.getDecrypter();
         this.keyGenerator = cryptosystem.getKeyGenerator();
         this.cryptosystem = cryptosystem;
+
+        if (cryptosystem.isKeyLengthConst()) {
+            view.setKeyLength(String.valueOf(cryptosystem.getDefaultKeyLength()));
+        } else {
+            view.setKeyLength("");
+        }
+
+        view.setKeyLengthAvailability(cryptosystem.isKeyLengthConst());
     }
 
     void setCryptFile(File file) {
@@ -89,10 +102,19 @@ class FileCryptPresenter extends Presenter<FileCryptView> {
 
                 InputStream keyStream;
 
+                int keyLength = 0;
+
+                if (cryptosystem.isKeyLengthConst()) {
+                    keyLength = Integer.parseInt(view.getKeyLength());
+                    if (keyLength % 32 != 0 || keyLength < 64) {
+                        throw new IllegalStateException("Key length must be divisible by 32 and at least 64");
+                    }
+                }
+
                 if (currentKeyFile == null || !cryptosystem.isNoGeneratedKeyAllowed()) {
 
                     File keyFile = new File(currentOutputDirectory, createKeyName(currentCryptFile.getName()));
-                    keyGenerator.generateFile(16, currentCryptFile, keyFile);
+                    keyGenerator.generateFile(keyLength, currentCryptFile, keyFile);
                     keyStream = new FileInputStream(keyFile);
 
                 } else {

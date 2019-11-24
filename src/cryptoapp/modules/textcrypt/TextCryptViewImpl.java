@@ -11,6 +11,7 @@ import javafx.scene.control.*;
  */
 public class TextCryptViewImpl extends ActivityChild implements TextCryptView {
 
+
     @FXML private TextArea encryptTextArea;
     private byte[] encryptBytes;
 
@@ -20,9 +21,14 @@ public class TextCryptViewImpl extends ActivityChild implements TextCryptView {
     @FXML private TextField keyTextField;
     private byte[] keyBytes;
 
+    @FXML private TextField keyLength;
+
     @FXML private Button cryptButton;
     @FXML private ProgressIndicator cryptIndicator;
     @FXML private Label errorMsgLabel;
+
+    private String defaultKeyLengthMessage;
+    private String keyLengthUnavailable = "Key length cannot be set...";
 
     private TextCryptPresenter presenter;
 
@@ -39,6 +45,8 @@ public class TextCryptViewImpl extends ActivityChild implements TextCryptView {
         decryptTextArea.textProperty().addListener((observableValue, oldStr, newStr) -> decryptBytes = newStr.getBytes());
 
         keyTextField.textProperty().addListener((observableValue, oldStr, newStr) -> keyBytes = newStr.getBytes());
+
+        defaultKeyLengthMessage = keyLength.getPromptText();
     }
 
     public void changeCryptosystem(Cryptosystem cryptosystem) {
@@ -123,6 +131,7 @@ public class TextCryptViewImpl extends ActivityChild implements TextCryptView {
         encryptTextArea.setDisable(!isUiAvailable);
         decryptTextArea.setDisable(!isUiAvailable);
         keyTextField.setDisable(!isUiAvailable);
+        keyLength.setDisable(!isUiAvailable);
     }
 
     @Override
@@ -134,5 +143,20 @@ public class TextCryptViewImpl extends ActivityChild implements TextCryptView {
     @Override
     public void setKeyFieldAvailability(boolean b) {
         keyTextField.setDisable(!b);
+    }
+
+    @Override
+    public String getKeyLengthString() {
+        return keyLength.getText();
+    }
+
+    @Override
+    public void setKeyLengthFieldAvailability(boolean isKeyLengthAvailable) {
+        if (isKeyLengthAvailable) {
+            keyLength.setPromptText(defaultKeyLengthMessage);
+        } else {
+            keyLength.setPromptText(keyLengthUnavailable);
+        }
+        keyLength.setDisable(!isKeyLengthAvailable);
     }
 }

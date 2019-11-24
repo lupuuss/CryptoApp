@@ -39,6 +39,11 @@ public class RabinCryptosystem implements Cryptosystem {
     }
 
     @Override
+    public int getDefaultKeyLength() {
+        return 1024;
+    }
+
+    @Override
     public Encrypter getEncrypter() {
         return encrypter;
     }

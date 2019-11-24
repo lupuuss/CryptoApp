@@ -36,6 +36,8 @@
 
     <TextField fx:id="keyTextField" promptText="Enter a key or let it be generated..." alignment="CENTER" />
 
+    <TextField fx:id="keyLength" promptText="Enter key length..." alignment="CENTER" />
+
     <TextArea fx:id="decryptTextArea" promptText="Enter your encrypted message here..." onMouseClicked="#onDecryptTextAreaClick" />
 
     <Label fx:id="errorMsgLabel" textFill="red"/>

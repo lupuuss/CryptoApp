@@ -20,6 +20,12 @@ class TextCryptPresenter extends Presenter<TextCryptView> {
     private final String noDataErrorMsg = "You have to enter message to encryption/decryption!";
 
     TextCryptPresenter(Cryptosystem cryptosystem) {
+        this.cryptosystem = cryptosystem;
+    }
+
+    @Override
+    public void inject(TextCryptView view) {
+        super.inject(view);
         changeCryptosystem(cryptosystem);
     }
 
@@ -32,7 +38,11 @@ class TextCryptPresenter extends Presenter<TextCryptView> {
 
         if (currentMode == TextCryptView.Mode.ENCRYPT && !cryptosystem.isNoGeneratedKeyAllowed()) {
             view.setKeyFieldAvailability(false);
+        } else {
+            view.setKeyFieldAvailability(true);
         }
+
+        view.setKeyLengthFieldAvailability(cryptosystem.isKeyLengthConst());
     }
 
     void changeCryptMode(TextCryptView.Mode mode) {
@@ -61,6 +71,15 @@ class TextCryptPresenter extends Presenter<TextCryptView> {
 
         new CompletableFuture<byte[]>().completeAsync(() -> {
 
+            int keyLength = 0;
+
+            if (cryptosystem.isKeyLengthConst()) {
+                keyLength = Integer.parseInt(view.getKeyLengthString());
+                if (keyLength % 32 != 0 || keyLength < 64) {
+                    throw new IllegalStateException("Key length must be divisible by 32 and at least 64");
+                }
+            }
+
             if (currentMode == TextCryptView.Mode.DECRYPT && (key == null || key.length == 0)) {
 
                 throw new NoKeyForDecryptionException();
@@ -68,7 +87,7 @@ class TextCryptPresenter extends Presenter<TextCryptView> {
             } else if (currentMode == TextCryptView.Mode.ENCRYPT
                     && (!cryptosystem.isNoGeneratedKeyAllowed() || key == null || key.length == 0)) {
 
-                key = keyGenerator.generate(data, 16);
+                key = keyGenerator.generate(data, keyLength);
             }
 
             if (currentMode == TextCryptView.Mode.ENCRYPT) {

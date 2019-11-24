@@ -5,6 +5,7 @@
 <?import javafx.scene.control.ProgressIndicator?>
 
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="cryptoapp.modules.filecrypt.FileCryptViewImpl"
@@ -57,6 +58,11 @@
                         -fx-background-radius: 5em;
                 </style>
         </Button>
+
+        <TextField fx:id="keyLength"
+                   promptText="Enter key length..."
+                   maxWidth="200"
+                   alignment="CENTER"/>
 
         <HBox alignment="TOP_CENTER">
                 <style>

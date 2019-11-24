@@ -23,4 +23,11 @@ public interface FileCryptView extends View {
     void setKeyFileButtonTextDefault();
 
     void setOutputDirectoryButtonTextDefault();
+
+    void setKeyLengthAvailability(boolean isKeyLengthAvailable);
+
+    String getKeyLength();
+
+    void setKeyLength(String keyLength);
+
 }

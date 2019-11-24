@@ -6,6 +6,7 @@ public interface Cryptosystem {
     boolean isKeyLengthConst();
 
     String getKeyLengthMeasure();
+    int getDefaultKeyLength();
 
     Encrypter getEncrypter();
     Decrypter getDecrypter();

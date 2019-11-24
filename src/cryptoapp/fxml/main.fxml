@@ -17,7 +17,7 @@
         <RowConstraints percentHeight="85.0"/>
     </rowConstraints>
 
-    <VBox GridPane.rowIndex="0" alignment="CENTER_RIGHT">
+    <VBox GridPane.rowIndex="0" alignment="CENTER_RIGHT" minWidth="500">
         <ComboBox  fx:id="comboBox" />
     </VBox>
 

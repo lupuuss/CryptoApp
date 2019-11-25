@@ -4,6 +4,7 @@ import cryptoapp.model.crypt.number.BigNumber;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class ConstPrimesPrimalityTest extends PrimalityTest {
 
     private final List<BigNumber> primes;

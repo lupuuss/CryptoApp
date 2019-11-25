@@ -1,8 +1,6 @@
 package cryptoapp.model.crypt.number.primalitytests;
 import cryptoapp.model.crypt.number.BigNumber;
 
-import java.sql.Time;
-
 @SuppressWarnings("WeakerAccess")
 public abstract class NumberTest {
 
@@ -33,6 +31,7 @@ public abstract class NumberTest {
 
     abstract protected boolean validation(BigNumber a);
 
+    @SuppressWarnings("unused")
     public TimeDebug getState() {
         return state;
     }

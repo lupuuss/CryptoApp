@@ -3,6 +3,7 @@ package cryptoapp.model.crypt.number.primalitytests;
 import cryptoapp.model.crypt.number.BigNumber;
 import cryptoapp.model.crypt.number.Operations;
 
+@SuppressWarnings("unused")
 public class FermatBase2PrimalityTest extends PrimalityTest {
 
     public FermatBase2PrimalityTest() {

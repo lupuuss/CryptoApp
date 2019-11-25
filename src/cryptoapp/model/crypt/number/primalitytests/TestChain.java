@@ -5,10 +5,11 @@ import cryptoapp.model.crypt.number.BigNumber;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class TestChain {
 
-    private List<NumberTest> testList = new ArrayList<>();
-    private BigNumber number;
+    private final List<NumberTest> testList = new ArrayList<>();
+    private final BigNumber number;
     private NumberTest.TimeDebug defaultState = null;
 
     public TestChain(NumberTest initial, BigNumber number, NumberTest.TimeDebug state) {

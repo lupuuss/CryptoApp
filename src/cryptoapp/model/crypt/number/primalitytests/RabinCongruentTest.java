@@ -1,8 +1,8 @@
 package cryptoapp.model.crypt.number.primalitytests;
 
 import cryptoapp.model.crypt.number.BigNumber;
-import cryptoapp.model.crypt.rabin.RabinCryptosystem;
 
+@SuppressWarnings("unused")
 public class RabinCongruentTest extends NumberTest {
 
     public RabinCongruentTest() {}

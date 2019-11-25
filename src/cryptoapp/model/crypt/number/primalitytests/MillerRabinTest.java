@@ -5,9 +5,10 @@ import cryptoapp.model.crypt.number.Comparison;
 import cryptoapp.model.crypt.number.Operations;
 import cryptoapp.model.crypt.number.PrimeNumberGenerator;
 
+@SuppressWarnings("unused")
 public class MillerRabinTest extends PrimalityTest {
 
-    private int k;
+    private final int k;
 
     public MillerRabinTest(int k) {
         this.k = k;

@@ -181,7 +181,7 @@ public class Operations {
 
     public static DivisionResult divide(BigNumber a, BigNumber b) {
         if (b.isZero()) {
-            throw new IllegalArgumentException("Divison by 0!");
+            throw new IllegalArgumentException("Division by 0!");
         }
 
         if (a.isZero()) {

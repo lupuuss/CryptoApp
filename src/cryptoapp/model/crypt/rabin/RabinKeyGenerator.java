@@ -3,7 +3,6 @@ package cryptoapp.model.crypt.rabin;
 import cryptoapp.base.KeyGenerator;
 import cryptoapp.model.crypt.number.BigNumber;
 import cryptoapp.model.crypt.number.PrimeNumberGenerator;
-import cryptoapp.model.crypt.number.primalitytests.NumberTest;
 import cryptoapp.model.crypt.number.primalitytests.RabinCongruentTest;
 
 import java.io.File;

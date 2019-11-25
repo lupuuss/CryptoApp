@@ -71,9 +71,12 @@ public class RabinEncrypter implements Encrypter {
             }
 
             int rest = bytes.length % partSize;
-            temp = Arrays.copyOfRange(bytes, partSize * (bytes.length / partSize), bytes.length);
 
-            encryptedParts.add(rawEncrypt(temp, n, key.length - RabinCryptosystem.HEADER_PADDING_SIZE - rest));
+            if (rest != 0) {
+                temp = Arrays.copyOfRange(bytes, partSize * (bytes.length / partSize), bytes.length);
+
+                encryptedParts.add(rawEncrypt(temp, n, key.length - RabinCryptosystem.HEADER_PADDING_SIZE - rest));
+            }
 
             return RabinCryptosystem.concatParts(encryptedParts);
 
@@ -94,7 +97,7 @@ public class RabinEncrypter implements Encrypter {
         int[] messageInts = Operations.byteArrayToInt(messageBytes);
 
         BigNumber m = new BigNumber(messageInts);
-        BigNumber c = m.times(m).divide(n).getRemainder();
+        BigNumber c = m.times(m).divide(n).getRemainder(); // C = M^2 mod n
 
         return c.toByteArray();
     }

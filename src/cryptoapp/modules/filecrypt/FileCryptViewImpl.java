@@ -12,9 +12,11 @@ import java.io.File;
 /**
  * View associated with filecrypt.fxml file
  */
+@SuppressWarnings({"FieldCanBeLocal"})
 public class FileCryptViewImpl extends ActivityChild implements FileCryptView {
 
-    @FXML public TextField keyLength;
+    @FXML
+    private TextField keyLength;
     @FXML private Button cryptFileChooserButton;
     @FXML private Button encryptionButton;
     @FXML private Button decryptionButton;
@@ -32,7 +34,7 @@ public class FileCryptViewImpl extends ActivityChild implements FileCryptView {
 
     private File lastPickedDir;
     private String defaultKeyLengthMessage;
-    private String keyLengthUnavailable = "Key length cannot be set...";
+    private final String keyLengthUnavailable = "Key length cannot be set...";
 
     @Override
     public void onStart() {

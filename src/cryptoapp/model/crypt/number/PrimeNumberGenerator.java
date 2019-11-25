@@ -6,9 +6,10 @@ import cryptoapp.model.crypt.number.primalitytests.NumberTest;
 
 import java.util.*;
 
+@SuppressWarnings("WeakerAccess")
 public class PrimeNumberGenerator {
 
-    private List<BigNumber> primes;
+    private final List<BigNumber> primes;
 
     public PrimeNumberGenerator() {
         this.primes = getAllPrimesToN(3000);
@@ -52,8 +53,8 @@ public class PrimeNumberGenerator {
 
         BigNumber iHopeIsPrime;
 
-        boolean isPrime = true;
-        boolean isValid = true;
+        boolean isPrime;
+        boolean isValid;
 
         var constTest = new ConstPrimesPrimalityTest(primes);
 

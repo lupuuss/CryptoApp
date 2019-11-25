@@ -6,7 +6,7 @@ import java.util.List;
 
 public class ConstPrimesPrimalityTest implements PrimalityTest {
 
-    private List<BigNumber> primes;
+    private final List<BigNumber> primes;
 
     public ConstPrimesPrimalityTest(List<BigNumber> primes) {
         this.primes = primes;
@@ -15,11 +15,9 @@ public class ConstPrimesPrimalityTest implements PrimalityTest {
     @Override
     public boolean isPrime(BigNumber a) {
 
-        var it = primes.iterator();
+        for (BigNumber prime : primes) {
 
-        while (it.hasNext()) {
-
-            if (a.divide(it.next()).getRemainder().isZero()) {
+            if (a.divide(prime).getRemainder().isZero()) {
 
                 return false;
             }

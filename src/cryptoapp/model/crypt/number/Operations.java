@@ -1,29 +1,11 @@
 package cryptoapp.model.crypt.number;
 
-import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.Arrays;
 
+@SuppressWarnings({"WeakerAccess", "SuspiciousNameCombination", "unused"})
 public class Operations {
-
-    private static class KnuthResult {
-        private int[] quotient;
-        private int[] reminder;
-
-        KnuthResult(int[] quotient, int[] reminder) {
-            this.quotient = quotient;
-            this.reminder = reminder;
-        }
-
-        int[] getQuotient() {
-            return quotient;
-        }
-
-        int[] getReminder() {
-            return reminder;
-        }
-    }
 
     public static long u_long(int val) {
         return (long) val & 0xffffffffL;
@@ -170,7 +152,7 @@ public class Operations {
             throw new IllegalArgumentException("Shift with value " + n + " is not supported!");
         }
 
-        long carry = 0;
+        long carry;
         int temp = 0;
 
         for (int i = 0; i < size; i++) {
@@ -252,9 +234,8 @@ public class Operations {
         int quotientSize = dividend.length - divisor.length;
         int[] quotient = new int[quotientSize];
 
-        for (int i = 1; i < quotientSize - 1; i++) {
-            quotient[i - 1] = dividend[i + divisor.length - 1];
-        }
+        if (quotientSize - 1 - 1 >= 0)
+            System.arraycopy(dividend, 1 + divisor.length - 1, quotient, 0, quotientSize - 1 - 1);
 
         return new DivisionResult(new BigNumber(quotient, a.sign * b.sign), new BigNumber(divisor));
     }
@@ -268,7 +249,7 @@ public class Operations {
         }
 
         int i = -1;
-        int res = 0;
+        int res;
         int mask = 0x80000000;
         do {
 
@@ -280,94 +261,16 @@ public class Operations {
         return i;
     }
 
-    public static long divideUnsignedLongByInt(long N, int D) {
-        long q, r;
-        long a1 = N >>> 32;
-        long a0 = N & 0xffffffffL;
-        if (D >= 0)
-        {
-            if (a1 < ((D - a1 - (a0 >>> 31)) & 0xffffffffL))
-            {
-                /* dividend, divisor, and quotient are nonnegative */
-                q = N / D;
-                r = N % D;
-            }
-            else
-            {
-                /* Compute c1*2^32 + c0 = a1*2^32 + a0 - 2^31*d */
-                long c = N - ((long) D << 31);
-                /* Divide (c1*2^32 + c0) by d */
-                q = c / D;
-                r = c % D;
-                /* Add 2^31 to quotient */
-                q += 1 << 31;
-            }
-        }
-        else
-        {
-            long b1 = D >>> 1;	/* d/2, between 2^30 and 2^31 - 1 */
-            //long c1 = (a1 >> 1); /* A/2 */
-            //int c0 = (a1 << 31) + (a0 >> 1);
-            long c = N >>> 1;
-            if (a1 < b1 || (a1 >> 1) < b1)
-            {
-                if (a1 < b1)
-                {
-                    q = c / b1;
-                    r = c % b1;
-                }
-                else /* c1 < b1, so 2^31 <= (A/2)/b1 < 2^32 */
-                {
-                    c = ~(c - (b1 << 32));
-                    q = c / b1;  /* (A/2) / (d/2) */
-                    r = c % b1;
-                    q = (~q) & 0xffffffffL;    /* (A/2)/b1 */
-                    r = (b1 - 1) - r; /* r < b1 => new r >= 0 */
-                }
-                r = 2 * r + (a0 & 1);
-                if ((D & 1) != 0)
-                {
-                    if (r >= q) {
-                        r = r - q;
-                    } else if (q - r <= ((long) D & 0xffffffffL)) {
-                        r = r - q + D;
-                        q -= 1;
-                    } else {
-                        r = r - q + D + D;
-                        q -= 2;
-                    }
-                }
-            }
-            else				/* Implies c1 = b1 */
-            {				/* Hence a1 = d - 1 = 2*b1 - 1 */
-                if (a0 >= ((long)(-D) & 0xffffffffL))
-                {
-                    q = -1;
-                    r = a0 + D;
-                }
-                else
-                {
-                    q = -2;
-                    r = a0 + D + D;
-                }
-            }
-        }
-
-        return (r << 32) | (q & 0xFFFFFFFFl);
-    }
-
     public static int subtractAndMultiply(int[] dest, int offset, int[] x, int len, int y) {
-        long yl = (long) y & 0xffffffffL;
+        long yl = u_long(y);
         int carry = 0;
         int j = 0;
-        do
-        {
-            long prod = ((long) x[j] & 0xffffffffL) * yl;
+        do {
+            long prod = u_long(x[j]) * yl;
             int prod_low = (int) prod;
             int prod_high = (int) (prod >> 32);
             prod_low += carry;
-            // Invert the high-order bit, because: (unsigned) X > (unsigned) Y
-            // iff: (int) (X^0x80000000) > (int) (Y^0x80000000).
+
             carry = ((prod_low ^ 0x80000000) < (carry ^ 0x80000000) ? 1 : 0)
                     + prod_high;
             int x_j = dest[offset+j];
@@ -375,36 +278,31 @@ public class Operations {
             if ((prod_low ^ 0x80000000) > (x_j ^ 0x80000000))
                 carry++;
             dest[offset+j] = prod_low;
-        }
-        while (++j < len);
+        } while (++j < len);
         return carry;
     }
 
     public static void divide (int[] zds, int nx, int[] y, int ny) {
         int j = nx;
-        do
-        {
+        do {
             int qhat;
-            if (zds[j]==y[ny-1])
+            if (zds[j]==y[ny-1]) {
                 qhat = -1;
-            else
-            {
-                long w = (((long)(zds[j])) << 32) + ((long)zds[j-1] & 0xffffffffL);
-                qhat = (int) divideUnsignedLongByInt(w, y[ny-1]);
+            } else  {
+                long w = (((long)(zds[j])) << 32) + u_long(zds[j-1]);
+                qhat = (int) Long.divideUnsigned(w, u_long(y[ny-1]));
             }
-            if (qhat != 0)
-            {
+
+            if (qhat != 0) {
+
                 int borrow = subtractAndMultiply(zds, j - ny, y, ny, qhat);
                 int save = zds[j];
-                long num = ((long)save&0xffffffffL) - ((long)borrow&0xffffffffL);
-                while (num != 0)
-                {
+                long num = u_long(save) - u_long(borrow);
+                while (num != 0) {
                     qhat--;
                     long carry = 0;
-                    for (int i = 0;  i < ny; i++)
-                    {
-                        carry += ((long) zds[j-ny+i] & 0xffffffffL)
-                                + ((long) y[i] & 0xffffffffL);
+                    for (int i = 0;  i < ny; i++) {
+                        carry += u_long(zds[j-ny+i]) + u_long(y[i]);
                         zds[j-ny+i] = (int) carry;
                         carry >>>= 32;
                     }
@@ -418,9 +316,7 @@ public class Operations {
 
     private static void shiftOneIntLeft(int[] array, int size) {
 
-        for (int i = size - 1; i > 0; i--) {
-            array[i] = array[i - 1];
-        }
+        if (size - 1 >= 0) System.arraycopy(array, 0, array, 1, size - 1);
     }
 
     public static DivisionResult divisionByUnsignedInt (int[] dividend, int size, int divisor, int dividendSign, int divisorSign) {
@@ -436,89 +332,6 @@ public class Operations {
         }
 
         return new DivisionResult(new BigNumber(quotient, dividendSign * divisorSign), new BigNumber((int) k));
-    }
-
-    private static KnuthResult knuthDivision(int[] dividend,int m, int[] divisor, int n) {
-
-        int norm = normalizeValue(divisor, n);
-        System.out.println(norm);
-        if (norm != 0 && (int)(((u_long(dividend[dividend.length - 1]) << norm) & 0xffffffff00000000L) >> norm) != 0) {
-            dividend = Arrays.copyOf(dividend, m + 1);
-            m = m + 1;
-        } else {
-            dividend = Arrays.copyOf(dividend, m);
-        }
-
-        divisor = Arrays.copyOf(divisor, n);
-
-        if (norm != 0) {
-            leftShiftIntArray(dividend, m, norm);
-            leftShiftIntArray(divisor, n, norm);
-        }
-
-        int[] quotient = new int[m - n + 1];
-        int[] remainder = new int[n];
-
-        long base = 0x100000000L;
-
-        long q, r;
-
-        for (int j = m - n - 1; j >= 0; j--) {
-            q = Long.divideUnsigned(
-                    u_long(dividend[j + n]) * base + u_long(dividend[j + n - 1]),
-                    u_long(divisor[n - 1])
-            );
-            r = Long.remainderUnsigned(
-                    u_long(dividend[j + n]) * base + u_long(dividend[j + n - 1]),
-                    u_long(divisor[n - 1])
-            );
-
-            while (Long.compareUnsigned(q ,base) == 0
-                    || Long.compareUnsigned(q * u_long(divisor[n-2]), base * r + u_long(dividend[j + n - 2])) > 0) {
-                q--;
-                r += u_long(divisor[n - 1]);
-
-
-                if (Long.compareUnsigned(r, base) >= 0) break;
-            }
-
-            long k = 0, t, p;
-
-            for (int i = 0; i < n; i++) {
-                p =  q * u_long(divisor[i]);
-
-                t = u_long(dividend[i + j]) - k - (p & 0xFFFFFFFFL);
-                dividend[i + j] = (int)t;
-
-                k = (p >> 32) - (t >> 32);
-            }
-
-            t = u_long(dividend[j + n]) - k;
-            dividend[j + n] = (int)t;
-
-            quotient[j] = (int)q;
-
-
-            if (t < 0) {
-                quotient[j]--;
-                long carry = 0;
-
-                for (int i = 0; i < n; i++) {
-                    carry += u_long(dividend[i + j]) + u_long(divisor[i]);
-                    dividend[i + j] = (int)carry;
-                    carry >>>= 32;
-                }
-
-                dividend[j + n] += (int)carry;
-            }
-        }
-
-        System.arraycopy(dividend, 0, remainder, 0, n);
-        if (norm != 0) {
-            rightShiftIntArray(remainder, n, norm);
-        }
-
-        return new KnuthResult(quotient, remainder);
     }
 
     public static BigNumber modularExponentiation(BigNumber base, BigNumber exponent, BigNumber modulus) {
@@ -586,9 +399,7 @@ public class Operations {
 
     private static void appendZerosTo32bits(StringBuilder builder, String temp) {
 
-        for (int i = 0; i < 32 - temp.length(); i++) {
-            builder.append("0");
-        }
+        builder.append("0".repeat(Math.max(0, 32 - temp.length())));
 
         builder.append(temp);
     }

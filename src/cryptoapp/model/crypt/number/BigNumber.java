@@ -2,16 +2,16 @@ package cryptoapp.model.crypt.number;
 
 import java.util.Arrays;
 
-@SuppressWarnings("WeakerAccess")
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class BigNumber {
 
-    public static BigNumber ZERO = new BigNumber(0);
-    public static BigNumber ONE = new BigNumber(1);
-    public static BigNumber TWO = new BigNumber(2);
+    public static final BigNumber ZERO = new BigNumber(0);
+    public static final BigNumber ONE = new BigNumber(1);
+    public static final BigNumber TWO = new BigNumber(2);
 
     int sign = 1;
 
-    int[] bits;
+    final int[] bits;
 
     int realLength;
 

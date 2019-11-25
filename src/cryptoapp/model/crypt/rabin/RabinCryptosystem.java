@@ -15,9 +15,9 @@ public class RabinCryptosystem implements Cryptosystem {
 
     private final byte[] HEADER = { 0, 'R', 'B', 'N' }; // ends with 0 to m < n;
 
-    private RabinEncrypter encrypter = new RabinEncrypter(HEADER);
-    private RabinDecrypter decrypter = new RabinDecrypter(HEADER);
-    private RabinKeyGenerator rabinKeyGenerator;
+    private final RabinEncrypter encrypter = new RabinEncrypter(HEADER);
+    private final RabinDecrypter decrypter = new RabinDecrypter(HEADER);
+    private final RabinKeyGenerator rabinKeyGenerator;
 
     public RabinCryptosystem(PrimeNumberGenerator primeNumberGenerator) {
         rabinKeyGenerator = new RabinKeyGenerator(primeNumberGenerator);
@@ -31,11 +31,6 @@ public class RabinCryptosystem implements Cryptosystem {
     @Override
     public boolean isKeyLengthConst() {
         return true;
-    }
-
-    @Override
-    public String getKeyLengthMeasure() {
-        return "bits";
     }
 
     @Override

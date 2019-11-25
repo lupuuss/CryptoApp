@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@SuppressWarnings("WeakerAccess")
 public class RabinDecrypter implements Decrypter {
 
     private final byte[] headerConst;
@@ -88,7 +89,7 @@ public class RabinDecrypter implements Decrypter {
     private byte[] findSolution(BigNumber[] squareRoots) {
         byte[] temp;
 
-        boolean isOk = false;
+        boolean isOk;
 
         for (BigNumber root: squareRoots) {
             temp = root.toByteArray();

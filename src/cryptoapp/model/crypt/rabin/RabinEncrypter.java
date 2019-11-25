@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+@SuppressWarnings("WeakerAccess")
 public class RabinEncrypter implements Encrypter {
 
     private final byte[] headerConst;

@@ -7,9 +7,9 @@ import cryptoapp.base.KeyGenerator;
 
 public class OneTimePad implements Cryptosystem {
 
-    private OneTimePadEncrypter encrypter = new OneTimePadEncrypter();
-    private OneTimePadDecrypter decrypter = new OneTimePadDecrypter();
-    private OneTimePadKeyGenerator keyGenerator = new OneTimePadKeyGenerator();
+    private final OneTimePadEncrypter encrypter = new OneTimePadEncrypter();
+    private final OneTimePadDecrypter decrypter = new OneTimePadDecrypter();
+    private final OneTimePadKeyGenerator keyGenerator = new OneTimePadKeyGenerator();
 
     @Override
     public boolean isNoGeneratedKeyAllowed() {
@@ -19,11 +19,6 @@ public class OneTimePad implements Cryptosystem {
     @Override
     public boolean isKeyLengthConst() {
         return false;
-    }
-
-    @Override
-    public String getKeyLengthMeasure() {
-        return "";
     }
 
     @Override

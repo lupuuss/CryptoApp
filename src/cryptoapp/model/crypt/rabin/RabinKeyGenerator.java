@@ -10,7 +10,7 @@ import java.io.FileOutputStream;
 @SuppressWarnings("WeakerAccess")
 public class RabinKeyGenerator implements KeyGenerator {
 
-    private PrimeNumberGenerator primeNumberGenerator;
+    private final PrimeNumberGenerator primeNumberGenerator;
 
     public RabinKeyGenerator(PrimeNumberGenerator primeNumberGenerator) {
         this.primeNumberGenerator = primeNumberGenerator;

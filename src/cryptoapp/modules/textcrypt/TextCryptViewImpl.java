@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 /**
  * View associated with textcrypt.fxml
  */
+@SuppressWarnings("FieldCanBeLocal")
 public class TextCryptViewImpl extends ActivityChild implements TextCryptView {
 
 
@@ -28,7 +29,7 @@ public class TextCryptViewImpl extends ActivityChild implements TextCryptView {
     @FXML private Label errorMsgLabel;
 
     private String defaultKeyLengthMessage;
-    private String keyLengthUnavailable = "Key length cannot be set...";
+    private final String keyLengthUnavailable = "Key length cannot be set...";
 
     private TextCryptPresenter presenter;
 

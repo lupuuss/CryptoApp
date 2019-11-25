@@ -2,6 +2,7 @@ package cryptoapp.modules.filecrypt;
 
 import cryptoapp.base.View;
 
+@SuppressWarnings("WeakerAccess")
 public interface FileCryptView extends View {
 
     void setCryptFileButtonText(String text);

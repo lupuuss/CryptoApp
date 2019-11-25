@@ -1,5 +1,6 @@
 package cryptoapp.model.crypt.number;
 
+@SuppressWarnings("WeakerAccess")
 public class EuclideanResult {
 
     private final BigNumber gcd;

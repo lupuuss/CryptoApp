@@ -1,5 +1,6 @@
 package cryptoapp.model.crypt.number;
 
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class Comparison {
 
     public static int compareBitsRange(int[] a, int startA, int[] b, int startB, int intsCount) {
@@ -20,10 +21,10 @@ public class Comparison {
     }
 
     public static class Result {
-        private BigNumber bigger;
-        private BigNumber smaller;
-        private boolean equal;
-        private boolean isLeftBigger;
+        private final BigNumber bigger;
+        private final BigNumber smaller;
+        private final boolean equal;
+        private final boolean isLeftBigger;
 
         public Result(BigNumber bigger, BigNumber smaller, boolean equal, boolean isLeftBigger) {
             this.bigger = bigger;

@@ -42,6 +42,12 @@ class TextCryptPresenter extends Presenter<TextCryptView> {
             view.setKeyFieldAvailability(true);
         }
 
+        if (cryptosystem.isKeyLengthConst()) {
+            view.setKeyLength(String.valueOf(cryptosystem.getDefaultKeyLength()));
+        } else {
+            view.setKeyLength("");
+        }
+
         view.setKeyLengthFieldAvailability(cryptosystem.isKeyLengthConst());
     }
 

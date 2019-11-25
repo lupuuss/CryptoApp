@@ -33,4 +33,6 @@ public interface TextCryptView extends View {
     void setUiAvailability(boolean isUiAvailable);
 
     void setErrorMsg(String message);
+
+    void setKeyLength(String keyLength);
 }

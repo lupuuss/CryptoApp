@@ -43,12 +43,12 @@ public class FileCryptViewImpl extends ActivityChild implements FileCryptView {
                 Crypt.getOneTimePad()
         );
 
-        presenter.inject(this);
-
         defaultCryptFileChooserText = cryptFileChooserButton.getText();
         defaultKeyFileChooserText = keyFileChooserButton.getText();
         defaultOutputDirectoryChooserText = outputFolderChooserButton.getText();
         defaultKeyLengthMessage = keyLength.getPromptText();
+
+        presenter.inject(this);
     }
 
     public void changeCryptosystem(Cryptosystem cryptosystem) {

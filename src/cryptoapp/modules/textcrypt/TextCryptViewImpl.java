@@ -39,6 +39,8 @@ public class TextCryptViewImpl extends ActivityChild implements TextCryptView {
         presenter = new TextCryptPresenter(
                 Crypt.getOneTimePad()
         );
+        defaultKeyLengthMessage = keyLength.getPromptText();
+
         presenter.inject(this);
 
         encryptTextArea.textProperty().addListener((observableValue, oldStr, newStr) -> encryptBytes = newStr.getBytes());
@@ -47,7 +49,6 @@ public class TextCryptViewImpl extends ActivityChild implements TextCryptView {
 
         keyTextField.textProperty().addListener((observableValue, oldStr, newStr) -> keyBytes = newStr.getBytes());
 
-        defaultKeyLengthMessage = keyLength.getPromptText();
     }
 
     public void changeCryptosystem(Cryptosystem cryptosystem) {
@@ -159,5 +160,10 @@ public class TextCryptViewImpl extends ActivityChild implements TextCryptView {
             keyLength.setPromptText(keyLengthUnavailable);
         }
         keyLength.setDisable(!isKeyLengthAvailable);
+    }
+
+    @Override
+    public void setKeyLength(String keyLength) {
+        this.keyLength.setText(keyLength);
     }
 }

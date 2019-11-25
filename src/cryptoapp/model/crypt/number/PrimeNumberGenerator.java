@@ -2,6 +2,7 @@ package cryptoapp.model.crypt.number;
 
 import cryptoapp.model.crypt.number.primalitytests.ConstPrimesPrimalityTest;
 import cryptoapp.model.crypt.number.primalitytests.FermatBase2PrimalityTest;
+import cryptoapp.model.crypt.number.primalitytests.MillerRabinTest;
 import cryptoapp.model.crypt.number.primalitytests.NumberTest;
 
 import java.util.*;
@@ -54,11 +55,10 @@ public class PrimeNumberGenerator {
         BigNumber iHopeIsPrime;
 
         boolean isPrime;
-        boolean isValid;
-
-        var constTest = new ConstPrimesPrimalityTest(primes);
 
         int tested = 0;
+
+        long time = System.currentTimeMillis();
 
         do {
 
@@ -66,26 +66,18 @@ public class PrimeNumberGenerator {
 
             iHopeIsPrime = new BigNumber(getNBitsOddInteger(n));
 
-            isPrime = constTest.isPrime(iHopeIsPrime);
+            isPrime = iHopeIsPrime
+                    .applyTest(new ConstPrimesPrimalityTest(primes))
+                    .applyTest(new FermatBase2PrimalityTest(NumberTest.TimeDebug.ONLY_PASSED))
+                    .applyTest(validator)
+                    .applyTest(new MillerRabinTest(10, NumberTest.TimeDebug.ALL))
+                    .execute();
 
-            if (!isPrime) {
-                continue;
-            }
+        } while (!isPrime);
 
-            isValid = validator.isValid(iHopeIsPrime);
-
-            if (!isValid) {
-                continue;
-            }
-
-            isPrime = new FermatBase2PrimalityTest().isPrime(iHopeIsPrime);
-
-            if (isPrime) {
-                break;
-            }
-        } while (true);
-
-        System.out.println("Following number required to test " + tested + " numbers");
+        System.out.println("Following number required to test "
+                + tested + " numbers in " + ((System.currentTimeMillis() - time) / 1000.0) + "s");
+        System.out.println(iHopeIsPrime.toBinaryString(false));
         return iHopeIsPrime;
     }
 

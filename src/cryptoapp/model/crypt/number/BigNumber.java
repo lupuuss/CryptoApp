@@ -1,5 +1,8 @@
 package cryptoapp.model.crypt.number;
 
+import cryptoapp.model.crypt.number.primalitytests.NumberTest;
+import cryptoapp.model.crypt.number.primalitytests.TestChain;
+
 import java.util.Arrays;
 
 @SuppressWarnings({"WeakerAccess", "unused"})
@@ -168,5 +171,10 @@ public class BigNumber {
 
     public int getSign() {
         return sign;
+    }
+
+    public TestChain applyTest(NumberTest test) {
+
+        return new TestChain(test, this);
     }
 }

@@ -3,6 +3,8 @@ package cryptoapp.model.crypt.rabin;
 import cryptoapp.base.KeyGenerator;
 import cryptoapp.model.crypt.number.BigNumber;
 import cryptoapp.model.crypt.number.PrimeNumberGenerator;
+import cryptoapp.model.crypt.number.primalitytests.NumberTest;
+import cryptoapp.model.crypt.number.primalitytests.RabinCongruentTest;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -23,12 +25,12 @@ public class RabinKeyGenerator implements KeyGenerator {
 
         BigNumber p = primeNumberGenerator.generatePrime(
                 constKeyLength / 2,
-                n -> n.divide(new BigNumber(4)).getRemainder().isInt(3)
+                new RabinCongruentTest()
         );
 
         BigNumber q = primeNumberGenerator.generatePrime(
                 constKeyLength / 2,
-                n -> n.divide(new BigNumber(4)).getRemainder().isInt(3)
+                new RabinCongruentTest()
         );
 
         byte[] key = new byte[constKeyLength * 4];

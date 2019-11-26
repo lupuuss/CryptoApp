@@ -106,8 +106,8 @@ class FileCryptPresenter extends Presenter<FileCryptView> {
 
                 if (cryptosystem.isKeyLengthConst()) {
                     keyLength = Integer.parseInt(view.getKeyLength());
-                    if (keyLength % 32 != 0 || keyLength < 64) {
-                        throw new IllegalStateException("Key length must be divisible by 32 and at least 64");
+                    if (keyLength % 32 != 0 || keyLength < 128) {
+                        throw new IllegalStateException("Key length must be divisible by 32 and at least equal to 128");
                     }
                 }
 

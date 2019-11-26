@@ -17,6 +17,8 @@ public class RabinDecrypter implements Decrypter {
 
     private final byte[] headerConst;
 
+    private long modularExpTime = 0;
+
     public RabinDecrypter(byte[] headerConst) {
         this.headerConst = headerConst;
     }
@@ -51,6 +53,8 @@ public class RabinDecrypter implements Decrypter {
 
         BigNumber c = new BigNumber(bytes);
 
+        long time = System.currentTimeMillis();
+
         BigNumber mP = Operations.modularExponentiation(
                 c, decPck.pPlus1Divide4, decPck.p
         );
@@ -58,6 +62,8 @@ public class RabinDecrypter implements Decrypter {
         BigNumber mQ = Operations.modularExponentiation(
                 c, decPck.qPlus1Divide4, decPck.q
         );
+
+        modularExpTime += System.currentTimeMillis() - time;
 
         BigNumber part1 = decPck.yPTimesP.times(mQ);
         BigNumber part2 = decPck.yQTimesQ.times(mP);
@@ -123,6 +129,8 @@ public class RabinDecrypter implements Decrypter {
 
         DecryptionPackage decryptionPackage = new DecryptionPackage(keyBytes);
 
+        modularExpTime = 0;
+
         long time = System.currentTimeMillis();
         do {
 
@@ -132,6 +140,7 @@ public class RabinDecrypter implements Decrypter {
         } while (inputBlock.length == Crypt.BLOCK_SIZE);
 
         System.out.println("Decryption time: " + ((System.currentTimeMillis() - time) / 1000.0) + "s");
+        System.out.println("Modular exponentiation took: " + (modularExpTime /  1000.0) + " s");
 
         in.close();
         out.close();
